@@ -111,7 +111,7 @@ def session_test():
         f"Вы пришли на эту страницу {visits_count + 1} раз")
 
 
-@app.route('/news', methods=['GET', 'POST'])
+@app.route('/tests', methods=['GET', 'POST'])
 @login_required
 def add_news():
     form = NewsForm()
@@ -129,7 +129,7 @@ def add_news():
                            form=form)
 
 
-@app.route('/news/<int:id>', methods=['GET', 'POST'])
+@app.route('/tests/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
     form = NewsForm()
@@ -169,7 +169,7 @@ def edit_news(id):
                            )
 
 
-@app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
+@app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
     db_sess = db_session.create_session()
