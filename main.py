@@ -39,10 +39,10 @@ def index():
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news, posts=posts)
 
+
 @app.route("/search")
 def search():
     return render_template("search.html")
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
