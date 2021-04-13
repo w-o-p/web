@@ -2,28 +2,36 @@
 
 {% block content %}
 <h1>Добавление теста</h1>
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.title.label }}<br>
-        {{ form.title(class="form-control") }}<br>
-        {% for error in form.title.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.content.label }}<br>
-        {{ form.content(class="form-control") }}<br>
-        {% for error in form.content.errors %}
-            <p content="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>{{ form.is_private() }} {{ form.is_private.label }}</p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-    {{message}}
+<form>
+    <p>Название теста</p>
+    <p><input type="search" class="form-control"></p>
 </form>
+<h4>Условия</h4>
+<p>{{num}}</p>
+<form>
+    <p><input type="search" class="form-control"></p>
+</form>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <a>Ответ</a>
+            <form>
+                <p><input type="search" class="form-control"></p>
+            </form>
+        </div>
+        <div class="col-sm">
+            <a>Количество баллов</a>
+            <form>
+                <p><input type="search" class="form-control"></p>
+            </form>
+            <a href="/tests" class="btn btn-primary">
+                Создать ответ
+            </a>
+        </div>
+    </div>
+</div>
+<a href="/tests" class="btn btn-primary">
+    Сохранить условие
+</a>
+
 {% endblock %}

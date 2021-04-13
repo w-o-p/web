@@ -120,6 +120,8 @@ def session_test():
 @login_required
 def add_news():
     form = NewsForm()
+    count_conditions = []
+    num = len(count_conditions) + 1
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         news = News()
@@ -130,8 +132,7 @@ def add_news():
         db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/')
-    return render_template('news.html', title='Добавление теста',
-                           form=form)
+    return render_template('news.html', num=num)
 
 
 @app.route('/tests/<int:id>', methods=['GET', 'POST'])
