@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+<p class="bgr">
+    <a href="/tests" class="btn btn-primary">
+        Создать тест
+    </a>
+    <a href="/tests" class="btn btn-primary">
+        Создать тест
+    </a>
+</p>
 <h1 align="center">Записи в блоге</h1>
 {% if current_user.is_authenticated %}
 <p align="center">
@@ -25,7 +33,7 @@
             Удалить
         </a>
     </div>
-{% endif %}
+    {% endif %}
 </div>
 {% endfor %}
 {% endblock %}
