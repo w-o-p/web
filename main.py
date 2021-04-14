@@ -3,7 +3,7 @@ from data import db_session
 from data.users import User
 from data.news import News
 from forms.user import RegisterForm, LoginForm
-from forms.news import NewsForm
+from forms.news import TestForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
@@ -119,26 +119,20 @@ def session_test():
 @app.route('/tests', methods=['GET', 'POST'])
 @login_required
 def add_news():
-    form = NewsForm()
+    form = TestForm()
     count_conditions = []
     num = len(count_conditions) + 1
     if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        news = News()
-        news.title = form.title.data
-        news.content = form.content.data
-        news.is_private = form.is_private.data
-        current_user.news.append(news)
-        db_sess.merge(current_user)
-        db_sess.commit()
+        # вроде все робит но я не понимаю как отличить нажатие на кнопку создать тест и на кнопку сохранить условие
+
         return redirect('/')
-    return render_template('news.html', num=num)
+    return render_template('news.html', num=num, form=form, title='Добавление теста')
 
 
 @app.route('/tests/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
-    form = NewsForm()
+    form = TestForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
         if not current_user.admin:
