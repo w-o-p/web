@@ -2,37 +2,57 @@
 
 {% block content %}
 <h1>Добавление теста</h1>
-<form>
-    <p>Название теста</p>
-    <p><input type="search" class="form-control"></p>
-</form>
-<h4>Условия</h4>
-<p>{{num}}</p>
-<form>
-    <p><input type="search" class="form-control"></p>
-</form>
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <a>Ответ</a>
-            <form>
-                <p><input type="search" class="form-control"></p>
-            </form>
-            <a href="/tests" class="btn btn-primary">
-                Создать ответ
-            </a>
-        </div>
-        <div class="col-sm">
-            <a>Количество баллов</a>
-            <form>
-                <p><input type="search" class="form-control"></p>
-            </form>
-        </div>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.name.label }}
+        <br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
     </div>
-</div>
-<p> </p>
-<a href="/tests" class="btn btn-success">
-    Сохранить условие
-</a>
+    <div>
+        {{ form.content.label }}
+        <br>
+        {{ num }}
+        {{ form.content(class="form-control") }}<br>
+        {% for error in form.content.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                {{ form.answer.label }}
+                <br>
+                {{ form.answer(class="form-control") }}<br>
+                {% for error in form.answer.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+            <div class="col-sm">
+                {{ form.scores.label }}
+                <br>
+                {{ form.scores(class="form-control") }}<br>
+                {% for error in form.scores.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+                </div>
+        </div>
+        <a>{{ form.add_answer(type="submit", class="btn btn-primary") }}</a>
+    </div>
+    <br>
+    <p>{{ form.submit(type="submit", class="btn btn-success") }}</p>
+    {{message}}
+</form>
 
 {% endblock %}
