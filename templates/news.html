@@ -13,6 +13,15 @@
                 {{ error }}
             </p>
         {% endfor %}
+         {{ form.description.label }}
+            <br>
+            {{ form.description(class="form-control") }}<br>
+            {% for error in form.answer.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        <p>{{ form.add_picture(type="submit", class="btn btn-primary") }}</p>
     </div>
     <div>
         {{ form.content.label }}
@@ -51,8 +60,37 @@
         <a>{{ form.add_answer(type="submit", class="btn btn-primary") }}</a>
     </div>
     <br>
-    <p>{{ form.submit(type="submit", class="btn btn-success") }}</p>
+    <p>{{ form.submit_con(type="submit", class="btn btn-success") }}</p>
     {{message}}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                {{ form.res_point.label }}
+                <br>
+                {{ form.res_point(class="form-control") }}<br>
+                {% for error in form.res_point.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+            <div class="col-sm">
+                {{ form.result.label }}
+                <br>
+                {{ form.result(class="form-control") }}<br>
+                {% for error in form.result.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+                </div>
+        </div>
+        <a>{{ form.add_result(type="submit", class="btn btn-primary") }}</a>
+    </div>
+    <br>
+    <p>{{ form.submit_res(type="submit", class="btn btn-success") }}</p>
+    <br>
+    <p>{{ form.submit(type="submit", class="btn btn-danger") }}</p>
 </form>
 
 {% endblock %}

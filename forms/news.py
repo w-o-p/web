@@ -7,9 +7,16 @@ class TestForm(FlaskForm):
     name = StringField('Название теста', validators=[DataRequired()])
     content = TextAreaField("Условия")
     answer = TextAreaField("Ответ")
+    description = TextAreaField("Описание")
     scores = IntegerField("Количество баллов")
     add_answer = SubmitField('Создать ответ')
-    submit = SubmitField('Сохранить условие')
+    add_result = SubmitField('Создать результат')
+    submit_con = SubmitField('Сохранить условие')
+    res_point = IntegerField("Больше столки очков")
+    result = TextAreaField("Результат")
+    submit_res = SubmitField('Сохранить результат')
+    submit = SubmitField('Сохранить тест')
+    add_picture = SubmitField('Добавить изображение')
 
 
     save_question = False
