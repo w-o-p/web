@@ -129,44 +129,10 @@ def add_news():
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 
 
-@app.route('/tests/<int:id>', methods=['GET', 'POST'])
+@app.route('/tests_page', methods=['GET', 'POST'])
 @login_required
-def edit_news(id):
-    form = TestForm()
-    if request.method == "GET":
-        db_sess = db_session.create_session()
-        if not current_user.admin:
-            news = db_sess.query(News).filter(News.id == id,
-                                              News.user == current_user
-                                              ).first()
-        else:
-            news = db_sess.query(News).filter(News.id == id).first()
-        if news:
-            form.title.data = news.title
-            form.content.data = news.content
-            form.is_private.data = news.is_private
-        else:
-            abort(404)
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        if not current_user.admin:
-            news = db_sess.query(News).filter(News.id == id,
-                                              News.user == current_user
-                                              ).first()
-        else:
-            news = db_sess.query(News).filter(News.id == id).first()
-        if news:
-            news.title = form.title.data
-            news.content = form.content.data
-            news.is_private = form.is_private.data
-            db_sess.commit()
-            return redirect('/')
-        else:
-            abort(404)
-    return render_template('news.html',
-                           title='Редактирование новости',
-                           form=form
-                           )
+def edit_news():
+    return render_template('test.html', form=form)
 
 
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])

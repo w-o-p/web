@@ -16,6 +16,7 @@ class TestForm(FlaskForm):
     result = TextAreaField("Результат")
     submit_res = SubmitField('Сохранить результат')
     submit = SubmitField('Сохранить тест')
+    run_test = SubmitField('Пройти тест')
     add_picture = SubmitField('Добавить изображение')
 
 
