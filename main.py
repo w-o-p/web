@@ -132,6 +132,7 @@ def add_news():
 @app.route('/tests_page', methods=['GET', 'POST'])
 @login_required
 def edit_news():
+    form = TestForm()
     return render_template('test.html', form=form)
 
 
