@@ -3,8 +3,10 @@ from data import db_session
 from data.users import User
 from data.news import News
 from forms.user import RegisterForm, LoginForm
-from forms.news import TestForm
+from forms.news import TestForm, Addanswer
+import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from wtforms import StringField
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -116,17 +118,20 @@ def session_test():
         f"Вы пришли на эту страницу {visits_count + 1} раз")
 
 
-@app.route('/tests', methods=['GET', 'POST'])
+@app.route('/tests/<action>', methods=['GET', 'POST'])
 @login_required
-def add_news():
+def add_test(action):
+    add_ans_btn = Addanswer()
     form = TestForm()
     count_conditions = []
     num = len(count_conditions) + 1
-    if form.validate_on_submit():
-        # вроде все робит но я не понимаю как отличить нажатие на кнопку создать тест и на кнопку сохранить условие
+    if action == 'add_ans':  # мои неуспешные попытки по увеличению ответов
+        new.entrcount += 1
+        form.answer.min_entries = new.entrcount
+        if len(form.answer) < form.answer.min_entries:
+            form.answer.entries.append(form.answer.entries[0])
 
-        return redirect('/')
-    return render_template('news.html', num=num, form=form, title='Добавление теста')
+    return render_template('news.html', num=num, form=form, title='Добавление теста', add_ans_btn=add_ans_btn)
 
 
 @app.route('/tests_page', methods=['GET', 'POST'])

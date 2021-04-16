@@ -1,15 +1,16 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, IntegerField
+from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList
 from wtforms.validators import DataRequired
+
+entrcount = 1
 
 
 class TestForm(FlaskForm):
     name = StringField('Название теста', validators=[DataRequired()])
     content = TextAreaField("Условия")
-    answer = TextAreaField("Ответ")
+    answer = FieldList(StringField('ответ'), min_entries=4)
     description = TextAreaField("Описание")
     scores = IntegerField("Количество баллов")
-    add_answer = SubmitField('Создать ответ')
     add_result = SubmitField('Создать результат')
     submit_con = SubmitField('Сохранить условие')
     res_point = IntegerField("Больше столки очков")
@@ -20,5 +21,6 @@ class TestForm(FlaskForm):
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
 
-    save_question = False
-    a = 5
+
+class Addanswer(FlaskForm):
+    add_answer = SubmitField('Создать ответ')
