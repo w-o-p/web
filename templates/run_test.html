@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    <h3 align="middle">{{title}}</h3>
+    <br>
+    <br>
+    <h4 style="bgr">Вопрос: {{num}}</h4>
+    <p>Как рано вы можете встать без будильника?</p>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <p>Раньше 8</p>
+            </div>
+            <div class="col-sm">
+                <p align="right">{{ form.but_answer(type="submit", class="btn btn-primary") }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Между 8 и 10</p>
+            </div>
+            <div class="col-sm">
+                <p align="right">{{ form.but_answer(type="submit", class="btn btn-primary") }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Между 10 и 12</p>
+            </div>
+            <div class="col-sm">
+                <p align="right">{{ form.but_answer(type="submit", class="btn btn-primary") }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Похже 12</p>
+            </div>
+            <div class="col-sm">
+                <p align="right">{{ form.but_answer(type="submit", class="btn btn-primary") }}</p>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
