@@ -18,8 +18,7 @@ class TestForm(FlaskForm):
     submit = SubmitField('Сохранить тест')
     run_test = SubmitField('Пройти тест')
     add_picture = SubmitField('Добавить изображение')
-    but_answer = SubmitField("Раньше 8")
-
+    but_answer = SubmitField("Выбрать")
 
     save_question = False
     a = 5

@@ -140,7 +140,7 @@ def edit_news():
 @login_required
 def run_news():
     form = TestForm()
-    return render_template('run_test.html', form=form)
+    return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
 
 
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])
