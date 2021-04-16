@@ -14,12 +14,21 @@
             </p>
         {% endfor %}
          {{ form.description.label }}
-            <br>
-            {% for error in form.description.errors %}
+                <br>
+                {{ form.description(class="form-control") }}<br>
+                {% for error in form.description.errors %}
                 <p class="alert alert-danger" role="alert">
                     {{ error }}
                 </p>
             {% endfor %}
+        {{ form.teggs.label }}
+                <br>
+                {{ form.teggs(class="form-control") }}<br>
+                {% for error in form.teggs.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
         <p>{{ form.add_picture(type="submit", class="btn btn-primary") }}</p>
     </div>
     <div>
