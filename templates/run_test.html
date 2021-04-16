@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    <h1 align="centre">Тест: </h1>
+    <p>Вопрос </p>
+    <p>Как рано вы можете встать без будильника?</p>
+    <br>
+    <p>{{ form.but_amswer(type="submit", class="btn btn-light") }}</p>
+</form>
+{% endblock %}

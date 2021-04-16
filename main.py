@@ -136,6 +136,13 @@ def edit_news():
     return render_template('test.html', form=form)
 
 
+@app.route('/tests_run', methods=['GET', 'POST'])
+@login_required
+def run_news():
+    form = TestForm()
+    return render_template('run_test.html', form=form)
+
+
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
