@@ -47,6 +47,18 @@ def search():
     return render_template("search.html")
 
 
+@app.route("/search_teggs")
+def search_teggs():
+    form = TestForm()
+    return render_template("search_teggs.html", form=form)
+
+
+@app.route("/search_name")
+def search_name():
+    form = TestForm()
+    return render_template("search_name.html", form=form)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()

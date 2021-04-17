@@ -21,7 +21,10 @@ class TestForm(FlaskForm):
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
     teggs = TextAreaField("Теги (через запятую)")
-
+    sub_teggs = SubmitField("Найти")
+    sub_name = SubmitField("Найти")
+    ar_teggs = TextAreaField("Тег:")
+    ar_name = TextAreaField("Назвавние:")
 
 class Addanswer(FlaskForm):
     add_answer = SubmitField('Создать ответ')
