@@ -160,6 +160,13 @@ def run_news():
     return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
 
 
+@app.route('/acc_page', methods=['GET', 'POST'])
+@login_required
+def acc_page():
+    form = TestForm()
+    return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
+
+
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
