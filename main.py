@@ -148,11 +148,27 @@ def add_test(action):
     return render_template('news.html', num=num, form=form, title='Добавление теста', add_ans_btn=add_ans_btn)
 
 
-@app.route('/tests_page', methods=['GET', 'POST'])
+@app.route('/tests_page//<int:f>', methods=['GET', 'POST'])
 @login_required
-def edit_news():
+def edit_news(f):
     form = TestForm()
-    return render_template('test.html', form=form)
+    db_sess = db_session.create_session()
+    b = db_sess.query(News.title).filter(News.id == f).first()
+    for i in b:
+        name = i
+    c = db_sess.query(News.content).filter(News.id == f).first()
+    for i in c:
+        content = i
+    d = db_sess.query(News.id).filter(News.id == f).first()
+    for i in d:
+        id_t = i
+    e = db_sess.query(News.user_id).filter(News.id == f).first()
+    for i in e:
+        user_id = i
+    f = db_sess.query(News.created_date).filter(News.id == f).first()
+    for i in f:
+        date = i
+    return render_template('test.html', name=name, content=content, id_t=id_t, user_id=user_id, date=date, form=form)
 
 
 @app.route('/tests_run', methods=['GET', 'POST'])
@@ -171,8 +187,12 @@ def acc_page_id(f):
     y = []
     t1 = ''
     t2 = ''
+    t3 = ''
+    t4 = ''
     des1 = ''
     des2 = ''
+    des3 = ''
+    des4 = ''
     form = TestForm()
     db_sess = db_session.create_session()
     b = db_sess.query(User.name).filter(User.id == f).first()
@@ -199,10 +219,28 @@ def acc_page_id(f):
     for i in y1:
         for w in i:
             y.append(w)
-    if len(x) >= 2:
+    if len(x) >= 4:
         t1 = x[0]
         t2 = x[1]
         des1 = y[0]
+        des2 = y[1]
+        t3 = x[2]
+        t4 = x[3]
+        des3 = y[2]
+        des4 = y[3]
+        a = 4
+    elif len(x) == 3:
+        t1 = x[0]
+        des1 = y[0]
+        t2 = x[1]
+        des2 = y[1]
+        t3 = x[2]
+        des3 = y[2]
+        a = 3
+    elif len(x) == 2:
+        t1 = x[0]
+        des1 = y[0]
+        t2 = x[1]
         des2 = y[1]
         a = 2
     elif len(x) == 1:
@@ -211,9 +249,14 @@ def acc_page_id(f):
         a = 1
     else:
         a = 0
-    print(x)
+    lo = db_sess.query(User.id).filter(User.id == f).first()
+    for i in lo:
+        id_a = i
+    f = db_sess.query(User.created_date).filter(News.id == f).first()
+    for i in f:
+        date = i
     return render_template('acc_page_id.html', name=name, a=a, description=description, ad=ad, t1=t1, t2=t2, des1=des1,
-                           des2=des2, form=form)
+                           des2=des2, t3=t3, t4=t4, des3=des3, des4=des4, id_a=id_a, date=date, form=form)
 
 
 @app.route('/acc_page', methods=['GET', 'POST'])
@@ -221,7 +264,6 @@ def acc_page_id(f):
 def acc_page():
     form = TestForm()
     if form.validate_on_submit():
-        print(1)
         a = "/acc_page_id/" + str(form.ac_id.data)
         return redirect(a)
     return render_template('acc_page.html', form=form)
