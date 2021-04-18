@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Имя: {{name}}</h2>
+    <p>email: {{email}}</p>
+    <p>Описание: {{description}}</p>
+    {% if a > 0 %}
+        <p>Тесты:</p>
+        <div>
+            <div>
+                <p>Какой ты хлеб</p>
+            </div>
+            <br>
+            <div>
+                <p>Какой ты супергерой</p>
+            </div>
+        </div>
+    {% else %}
+       <p>У этого аккаунта нет созданных тестов.</p>
+    {% endif %}
+{% endblock %}

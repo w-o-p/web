@@ -160,6 +160,16 @@ def run_news():
     return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
 
 
+@app.route('/acc_page_id', methods=['GET', 'POST'])
+@login_required
+def acc_page_id():
+    name = 'hjm'
+    email = 'jikjmnAxc'
+    a = 2
+    description = 'bhfvtrfvhgbkkmfvjhngfv'
+    return render_template('acc_page_id', name=name, email=email, a=a, description=description)
+
+
 @app.route('/acc_page', methods=['GET', 'POST'])
 @login_required
 def acc_page():
