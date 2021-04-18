@@ -160,21 +160,25 @@ def run_news():
     return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
 
 
-@app.route('/acc_page_id', methods=['GET', 'POST'])
+@app.route('/acc_page_id//<int:f>', methods=['GET', 'POST'])
 @login_required
-def acc_page_id():
-    name = 'hjm'
-    email = 'jikjmnAxc'
+def acc_page_id(f):
+    db_sess = db_session.create_session()
+    b = db_sess.query(User.name).filter(User.id == f).first()
+    for i in b:
+        name = i
+    c = db_sess.query(User.about).filter(User.id == f).first()
+    for i in c:
+        description = i
     a = 2
-    description = 'bhfvtrfvhgbkkmfvjhngfv'
-    return render_template('acc_page_id', name=name, email=email, a=a, description=description)
+    return render_template('acc_page_id.html', name=name, a=a, description=description)
 
 
 @app.route('/acc_page', methods=['GET', 'POST'])
 @login_required
 def acc_page():
     form = TestForm()
-    return render_template('acc_page', form=form)
+    return render_template('acc_page.html', form=form)
 
 
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])
@@ -197,3 +201,9 @@ def news_delete(id):
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
