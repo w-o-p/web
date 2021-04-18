@@ -8,7 +8,7 @@ entrcount = 1
 class TestForm(FlaskForm):
     name = StringField('Название теста', validators=[DataRequired()])
     content = TextAreaField("Условия")
-    answer = FieldList(StringField('ответ'), min_entries=4)
+    answer = FieldList(StringField('ответ'), min_entries=1)
     description = TextAreaField("Описание")
     scores = IntegerField("Количество баллов")
     add_result = SubmitField('Создать результат')

@@ -137,10 +137,12 @@ def add_test(action):
     form = TestForm()
     count_conditions = []
     num = len(count_conditions) + 1
+    if action == 'create':
+        new.entrcount = 1
     if action == 'add_ans':  # мои неуспешные попытки по увеличению ответов
         new.entrcount += 1
         form.answer.min_entries = new.entrcount
-        if len(form.answer) < form.answer.min_entries:
+        while len(form.answer) < form.answer.min_entries:
             form.answer.entries.append(form.answer.entries[0])
 
     return render_template('news.html', num=num, form=form, title='Добавление теста', add_ans_btn=add_ans_btn)
