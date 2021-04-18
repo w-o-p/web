@@ -164,7 +164,7 @@ def run_news():
 @login_required
 def acc_page():
     form = TestForm()
-    return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
+    return render_template('acc_page', form=form)
 
 
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])
