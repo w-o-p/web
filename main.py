@@ -163,6 +163,15 @@ def run_news():
 @app.route('/acc_page_id//<int:f>', methods=['GET', 'POST'])
 @login_required
 def acc_page_id(f):
+    x1 = []
+    y1 = []
+    x = []
+    y = []
+    t1 = ''
+    t2 = ''
+    des1 = ''
+    des2 = ''
+    form = TestForm()
     db_sess = db_session.create_session()
     b = db_sess.query(User.name).filter(User.id == f).first()
     for i in b:
@@ -170,14 +179,49 @@ def acc_page_id(f):
     c = db_sess.query(User.about).filter(User.id == f).first()
     for i in c:
         description = i
-    a = 2
-    return render_template('acc_page_id.html', name=name, a=a, description=description)
+    e = db_sess.query(User.admin).filter(User.id == f).first()
+    for i in e:
+        if i:
+            ad = 1
+        else:
+            ad = 0
+    k = db_sess.query(News.title).filter(News.user_id == f)
+    for i in k:
+        x1.append(i)
+    for i in x1:
+        for w in i:
+            x.append(w)
+    g = db_sess.query(News.content).filter(News.user_id == f)
+    for i in g:
+        y1.append(i)
+    for i in y1:
+        for w in i:
+            y.append(w)
+    if len(x) >= 2:
+        t1 = x[0]
+        t2 = x[1]
+        des1 = y[0]
+        des2 = y[1]
+        a = 2
+    elif len(x) == 1:
+        t1 = x[0]
+        des1 = y[0]
+        a = 1
+    else:
+        a = 0
+    print(x)
+    return render_template('acc_page_id.html', name=name, a=a, description=description, ad=ad, t1=t1, t2=t2, des1=des1,
+                           des2=des2, form=form)
 
 
 @app.route('/acc_page', methods=['GET', 'POST'])
 @login_required
 def acc_page():
     form = TestForm()
+    if form.validate_on_submit():
+        print(1)
+        a = "/acc_page_id/" + str(form.ac_id.data)
+        return redirect(a)
     return render_template('acc_page.html', form=form)
 
 
@@ -201,9 +245,3 @@ def news_delete(id):
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-

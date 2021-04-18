@@ -26,6 +26,7 @@ class TestForm(FlaskForm):
     ar_teggs = TextAreaField("Тег:")
     ar_name = TextAreaField("Назвавние:")
     ac_id = IntegerField("Введите id аккаунта")
+    sub_acc_page = SubmitField('Найти аккаунт')
 
 class Addanswer(FlaskForm):
     add_answer = SubmitField('Создать ответ')
