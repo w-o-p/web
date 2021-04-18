@@ -3,10 +3,10 @@ from data import db_session
 from data.users import User
 from data.news import News
 from forms.user import RegisterForm, LoginForm
-from forms.news import TestForm, Account_submit
+from forms.news import TestForm, Account_submit, Answers
 import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from wtforms import StringField
+from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -136,9 +136,13 @@ def add_test(action):
     form = TestForm()
     count_conditions = []
     num = len(count_conditions) + 1
-    if action == 'create':
+    if form.validate_on_submit():
+        print(form.questions.data)
+        return redirect('/')
+    elif action == 'create':
         new.entrcount = 1
-    if action == 'add_ans':
+        new.questcount = 1
+    elif action == 'add_ans':  # пока что не вызывается но мб потом будет
         new.entrcount += 1
         form.answer.min_entries = new.entrcount
         while len(form.answer) < form.answer.min_entries:
@@ -146,7 +150,7 @@ def add_test(action):
         form.scores.min_entries = new.entrcount
         while len(form.scores) < form.scores.min_entries:
             form.scores.entries.append(form.scores.entries[0])
-    if action == 'del_ans':
+    elif action == 'del_ans':  # пока что не вызывается но мб потом будет
         new.entrcount -= 1
         form.answer.min_entries = new.entrcount
         while len(form.answer) < form.answer.min_entries:
@@ -154,6 +158,10 @@ def add_test(action):
         form.scores.min_entries = new.entrcount
         while len(form.scores) < form.scores.min_entries:
             form.scores.entries.append(form.scores.entries[0])
+    elif action == 'add_quest':
+        new.questcount += 1
+        while len(form.questions) < new.questcount:
+            form.questions.append_entry(FormField(Answers))
 
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 
