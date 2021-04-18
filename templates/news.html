@@ -14,13 +14,21 @@
             </p>
         {% endfor %}
          {{ form.description.label }}
-            <br>
-            {{ form.description(class="form-control") }}<br>
-            {% for error in form.answer.errors %}
+                <br>
+                {{ form.description(class="form-control") }}<br>
+                {% for error in form.description.errors %}
                 <p class="alert alert-danger" role="alert">
                     {{ error }}
                 </p>
             {% endfor %}
+        {{ form.teggs.label }}
+                <br>
+                {{ form.teggs(class="form-control") }}<br>
+                {% for error in form.teggs.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
         <p>{{ form.add_picture(type="submit", class="btn btn-primary") }}</p>
     </div>
     <div>
@@ -39,11 +47,9 @@
             <div class="col-sm">
                 {{ form.answer.label }}
                 <br>
-                {{ form.answer(class="form-control") }}<br>
-                {% for error in form.answer.errors %}
-                    <p class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </p>
+                {% for item in form.answer %}
+                    {{ item.label }} {{ loop.index }}
+                    <p>{{ item }}</p>
                 {% endfor %}
             </div>
             <div class="col-sm">
@@ -57,7 +63,7 @@
                 {% endfor %}
                 </div>
         </div>
-        <a>{{ form.add_answer(type="submit", class="btn btn-primary") }}</a>
+        <a href="/tests/add_ans" class="btn btn-primary">{{ add_ans_btn.add_answer.label.text }}</a>
     </div>
     <br>
     <p>{{ form.submit_con(type="submit", class="btn btn-success") }}</p>

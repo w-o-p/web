@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 align="center">Поиск тестов</h1>
+<br>
+<br>
+<br>
 <form>
-    <p><input type="search" placeholder="Поиск по сайту" class="form-control"></p>
-   <p><input type="submit" value="Найти" class="btn btn-primary"></p>
+    <div align="middle">
+        <a href="/search_teggs" class="btn btn-primary">Искать по тегам</a>
+        <a href="/search_name" class="btn btn-primary">Искать по названию</a>
+    </div>
 </form>
 
 {% endblock %}

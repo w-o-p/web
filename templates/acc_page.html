@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    <h2 align="middle">Поиск аккаунтов</h2>
+    <br>
+    <br>
+    {{ form.ac_id.label }}
+    <br>
+    {{ form.ac_id(class="form-control") }}<br>
+    {% for error in form.ac_id.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <p>{{ form.sub_acc_page(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}
