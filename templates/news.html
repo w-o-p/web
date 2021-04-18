@@ -48,22 +48,21 @@
                 {{ form.answer.label }}
                 <br>
                 {% for item in form.answer %}
-                    {{ item.label }} {{ loop.index }}
-                    <p>{{ item }}</p>
+                    <label>{{ item.label.text }} {{ loop.index }}</label>
+                    <p>{{ item(class="form-control") }}</p>
                 {% endfor %}
             </div>
             <div class="col-sm">
                 {{ form.scores.label }}
                 <br>
-                {{ form.scores(class="form-control") }}<br>
-                {% for error in form.scores.errors %}
-                    <p class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </p>
+                {% for item in form.scores %}
+                    <label>{{ item.label.text }} {{ loop.index }}</label>
+                    <p>{{ item(class="form-control") }}</p>
                 {% endfor %}
-                </div>
+            </div>
         </div>
-        <a href="/tests/add_ans" class="btn btn-primary">{{ add_ans_btn.add_answer.label.text }}</a>
+        <a href="/tests/add_ans" class="btn btn-primary">{{ form.add_answer.label.text }}</a>
+        <a href="/tests/del_ans" class="btn btn-danger">{{ form.del_answer.label.text }}</a>
     </div>
     <br>
     <p>{{ form.submit_con(type="submit", class="btn btn-success") }}</p>

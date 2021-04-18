@@ -3,7 +3,7 @@ from data import db_session
 from data.users import User
 from data.news import News
 from forms.user import RegisterForm, LoginForm
-from forms.news import TestForm, Addanswer
+from forms.news import TestForm, Account_submit
 import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from wtforms import StringField
@@ -133,19 +133,29 @@ def session_test():
 @app.route('/tests/<action>', methods=['GET', 'POST'])
 @login_required
 def add_test(action):
-    add_ans_btn = Addanswer()
     form = TestForm()
     count_conditions = []
     num = len(count_conditions) + 1
     if action == 'create':
         new.entrcount = 1
-    if action == 'add_ans':  # мои неуспешные попытки по увеличению ответов
+    if action == 'add_ans':
         new.entrcount += 1
         form.answer.min_entries = new.entrcount
         while len(form.answer) < form.answer.min_entries:
             form.answer.entries.append(form.answer.entries[0])
+        form.scores.min_entries = new.entrcount
+        while len(form.scores) < form.scores.min_entries:
+            form.scores.entries.append(form.scores.entries[0])
+    if action == 'del_ans':
+        new.entrcount -= 1
+        form.answer.min_entries = new.entrcount
+        while len(form.answer) < form.answer.min_entries:
+            form.answer.entries.append(form.answer.entries[0])
+        form.scores.min_entries = new.entrcount
+        while len(form.scores) < form.scores.min_entries:
+            form.scores.entries.append(form.scores.entries[0])
 
-    return render_template('news.html', num=num, form=form, title='Добавление теста', add_ans_btn=add_ans_btn)
+    return render_template('news.html', num=num, form=form, title='Добавление теста')
 
 
 @app.route('/tests_page//<int:f>', methods=['GET', 'POST'])
@@ -260,10 +270,10 @@ def acc_page_id(f):
 
 
 @app.route('/acc_page', methods=['GET', 'POST'])
-@login_required
 def acc_page():
-    form = TestForm()
-    if form.validate_on_submit():
+    form = Account_submit()
+    b = form.validate_on_submit()
+    if b:
         a = "/acc_page_id/" + str(form.ac_id.data)
         return redirect(a)
     return render_template('acc_page.html', form=form)

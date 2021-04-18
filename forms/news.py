@@ -10,8 +10,10 @@ class TestForm(FlaskForm):
     content = TextAreaField("Условия")
     answer = FieldList(StringField('ответ'), min_entries=1)
     description = TextAreaField("Описание")
-    scores = IntegerField("Количество баллов")
+    scores = FieldList(IntegerField("Количество баллов"), min_entries=1)
     add_result = SubmitField('Создать результат')
+    add_answer = SubmitField('Создать ответ')
+    del_answer = SubmitField('Удалить ответ')
     submit_con = SubmitField('Сохранить условие')
     res_point = IntegerField("Больше столки очков")
     result = TextAreaField("Результат")
@@ -25,8 +27,8 @@ class TestForm(FlaskForm):
     sub_name = SubmitField("Найти")
     ar_teggs = TextAreaField("Тег:")
     ar_name = TextAreaField("Назвавние:")
-    ac_id = IntegerField("Введите id аккаунта")
-    sub_acc_page = SubmitField('Найти аккаунт')
 
-class Addanswer(FlaskForm):
-    add_answer = SubmitField('Создать ответ')
+
+class Account_submit(FlaskForm):
+    ac_id = IntegerField("Введите id аккаунта")
+    submit = SubmitField('Найти аккаунт')
