@@ -18,6 +18,18 @@
 <header>
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="/">All tests</a>
+        <a href="/" class="btn btn-secondary">
+        Основная
+        </a>
+        <a href="/tests/create" class="btn btn-secondary">
+            Создать тест
+        </a>
+        <a href="/search" class="btn btn-secondary">
+            Поиск тестов
+        </a>
+        <a href="/acc_page" class="btn btn-secondary">
+            Поиск аккаунтов
+        </a>
         {% if current_user.is_authenticated %}
         <p>
             <b class="navbar-brand">{{ current_user.name }}</b>
@@ -31,20 +43,6 @@
         {% endif %}
     </nav>
 </header>
-<p style="bgr">
-    <a href="/" class="btn btn-secondary">
-        Основная
-    </a>
-    <a href="/tests/create" class="btn btn-secondary">
-        Создать тест
-    </a>
-    <a href="/search" class="btn btn-secondary">
-        Поиск тестов
-    </a>
-    <a href="/acc_page" class="btn btn-secondary">
-        Поиск аккаунтов
-    </a>
-</p>
 <!-- Begin page content -->
 <main role="main" class="container">
     {% block content %}{% endblock %}

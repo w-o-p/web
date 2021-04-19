@@ -1,18 +1,25 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList
+from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
 from wtforms.validators import DataRequired
 
 entrcount = 1
+questcount = 1
+
+
+class Answers(FlaskForm):
+    content = TextAreaField("Вопрос")
+    answer = FieldList(StringField('ответ'), min_entries=4)
+    scores = FieldList(IntegerField("Количество баллов"), min_entries=4)
 
 
 class TestForm(FlaskForm):
     name = StringField('Название теста', validators=[DataRequired()])
-    content = TextAreaField("Условия")
-    answer = FieldList(StringField('ответ'), min_entries=1)
     description = TextAreaField("Описание")
-    scores = IntegerField("Количество баллов")
+    questions = FieldList(FormField(Answers), min_entries=1)
     add_result = SubmitField('Создать результат')
-    submit_con = SubmitField('Сохранить условие')
+    add_answer = SubmitField('Создать ответ')
+    del_answer = SubmitField('Удалить ответ')
+    submit_con = SubmitField('Создать условие')
     res_point = IntegerField("Больше столки очков")
     result = TextAreaField("Результат")
     submit_res = SubmitField('Сохранить результат')
@@ -21,12 +28,23 @@ class TestForm(FlaskForm):
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
     teggs = TextAreaField("Теги (через запятую)")
-    sub_teggs = SubmitField("Найти")
-    sub_name = SubmitField("Найти")
-    ar_teggs = TextAreaField("Тег:")
-    ar_name = TextAreaField("Назвавние:")
-    ac_id = IntegerField("Введите id аккаунта")
-    sub_acc_page = SubmitField('Найти аккаунт')
 
-class Addanswer(FlaskForm):
-    add_answer = SubmitField('Создать ответ')
+
+class Account_submit(FlaskForm):
+    ac_id = IntegerField("Введите id аккаунта")
+    submit = SubmitField('Найти аккаунт')
+
+
+class Test_id(FlaskForm):
+    ar_id = IntegerField("Введите id теста")
+    submit = SubmitField('Найти аккаунт')
+
+
+class Test_name_submit(FlaskForm):
+    ar_name = TextAreaField("Введите имя теста")
+    submit = SubmitField('Найти аккаунт')
+
+
+class Test_teggs_submit(FlaskForm):
+    ar_teggs = TextAreaField("Введите  тегги теста")
+    submit = SubmitField('Найти аккаунт')

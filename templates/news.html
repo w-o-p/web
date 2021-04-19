@@ -29,44 +29,30 @@
                     {{ error }}
                 </p>
                 {% endfor %}
-        <p>{{ form.add_picture(type="submit", class="btn btn-primary") }}</p>
     </div>
     <div>
-        {{ form.content.label }}
-        <br>
-        {{ num }}
-        {{ form.content(class="form-control") }}<br>
-        {% for error in form.content.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-sm">
-                {{ form.answer.label }}
-                <br>
-                {% for item in form.answer %}
-                    {{ item.label }} {{ loop.index }}
-                    <p>{{ item }}</p>
-                {% endfor %}
-            </div>
-            <div class="col-sm">
-                {{ form.scores.label }}
-                <br>
-                {{ form.scores(class="form-control") }}<br>
-                {% for error in form.scores.errors %}
+
+            {% for item in form.questions %}
+                {{ item }}
+                {% for error in item.errors %}
                     <p class="alert alert-danger" role="alert">
                         {{ error }}
                     </p>
                 {% endfor %}
-                </div>
+            {% endfor %}
         </div>
-        <a href="/tests/add_ans" class="btn btn-primary">{{ add_ans_btn.add_answer.label.text }}</a>
+        <!--
+        <a href="/tests/add_ans" class="btn btn-primary">{{ form.add_answer.label.text }}</a>
+        <a href="/tests/del_ans" class="btn btn-danger">{{ form.del_answer.label.text }}</a>
+        -->
     </div>
     <br>
-    <p>{{ form.submit_con(type="submit", class="btn btn-success") }}</p>
+    <p>
+        <a href="/tests/add_quest" class="btn btn-success">{{ form.submit_con.label.text}}</a>
+    </p>
     {{message}}
     <div class="container">
         <div class="row">
@@ -94,9 +80,13 @@
         <a>{{ form.add_result(type="submit", class="btn btn-primary") }}</a>
     </div>
     <br>
+    <!--
     <p>{{ form.submit_res(type="submit", class="btn btn-success") }}</p>
+    -->
     <br>
-    <p>{{ form.submit(type="submit", class="btn btn-danger") }}</p>
+    <p>
+        {{ form.submit(type="submit", class="btn btn-danger") }}
+    </p>
 </form>
 
 {% endblock %}

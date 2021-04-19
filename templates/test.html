@@ -2,13 +2,19 @@
 
 {% block content %}
 <form action="" method="post">
-    <h1 align="centre">{{name}}</h1>
-    <p>Описание: {{content}}</p>
-    <p>id теста:{{id_t}}</p>
-    <p>id создателя теста:{{user_id}}</p>
-    <p>дата создания:{{date}}</p>
-    <br>
-    <br>
-    <a href="/tests_run" class="btn btn-primary">Пройти тест</a>
+    {% if crea == 0 %}
+        <h1 align="centre">{{name}}</h1>
+        <p>Описание: {{content}}</p>
+        <p>id теста:{{id_t}}</p>
+        <p>id создателя теста:{{user_id}}</p>
+        <p>дата создания:{{date}}</p>
+        <br>
+        <br>
+        <a href="/tests_run" class="btn btn-primary">Пройти тест</a>
+    {% else %}
+        <br>
+        <br>
+        <h4 align="middle">Данного теста не существует</h4>
+    {% endif %}
 </form>
 {% endblock %}

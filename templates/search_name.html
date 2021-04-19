@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 align="center">Поиск тестов</h1>
-<br>
-<form>
+<form action="" method="post">
+    <h1 align="center">Поиск тестов</h1>
+    {{ form.hidden_tag() }}
     <br>
-                {{ form.ar_name(class="form-control") }}
     <br>
-    <p>{{ form.sub_name(type="submit", class="btn btn-primary") }}</p>
+    {{ form.ar_name.label }}
+    <br>
+    {{ form.ar_name(class="form-control") }}<br>
+    {% for error in form.ar_name.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    <br>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 
 {% endblock %}

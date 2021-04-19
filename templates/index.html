@@ -4,7 +4,7 @@
 <h1 align="center">Записи в блоге</h1>
 {% if current_user.is_authenticated %}
 <p align="center">
-    <a href="tests" class="btn btn-secondary">Добавить новость</a>
+    <a href="tests/create" class="btn btn-secondary">Добавить новость</a>
 </p>
 {% endif %}
 {% for item in news%}
@@ -21,13 +21,13 @@
         <a href="/tests_delete/{{ item.id }}" class="btn btn-danger">
             Удалить
         </a>
-        <a href="/tests_page" class="btn btn-success">
+        <a href="/tests_page/{{item.id}}" class="btn btn-success">
             Пройти тест
         </a>
     </div>
     {% else %}
        <div>
-           <a href="/tests_page" class="btn btn-success">
+           <a href="/tests_page/{{item.id}}" class="btn btn-success">
             Пройти тест
         </a>
        </div>
