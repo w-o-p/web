@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 align="center">Поиск по id</h1>
+<br>
+<form action="" method="post">
+    <br>
+        {{ form.ar_id(class="form-control") }}
+    <br>
+    <p>{{ form.sub_id(type="submit", class="btn btn-primary") }}</p>
+</form>
+
+{% endblock %}

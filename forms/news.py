@@ -32,6 +32,8 @@ class TestForm(FlaskForm):
     sub_name = SubmitField("Найти")
     ar_teggs = TextAreaField("Тег:")
     ar_name = TextAreaField("Назвавние:")
+    ar_id = TextAreaField("Id:")
+    sub_id = SubmitField("Найти")
 
 
 class Account_submit(FlaskForm):

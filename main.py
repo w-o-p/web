@@ -58,6 +58,15 @@ def search_name():
     form = TestForm()
     return render_template("search_name.html", form=form)
 
+@app.route("/search_id")
+def search_name():
+    form = Account_submit()
+    b = form.validate_on_submit()
+    if b:
+        a = "/tests_page/" + str(form.ar_id.data)
+        return redirect(a)
+    return render_template('acc_page.html', form=form)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
