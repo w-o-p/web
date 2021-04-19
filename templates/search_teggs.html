@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 align="center">Поиск по тегам</h1>
-<br>
 <form action="" method="post">
+    {{ form.hidden_tag() }}
+    <h1 align="center">Поиск по тегам</h1>
     <br>
-                {{ form.ar_teggs(class="form-control") }}
     <br>
-    <p>{{ form.sub_teggs(type="submit", class="btn btn-primary") }}</p>
+    {{ form.ar_teggs.label }}
+    <br>
+    {{ form.ar_teggs(class="form-control") }}<br>
+    {% for error in form.ar_teggs.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 
 {% endblock %}

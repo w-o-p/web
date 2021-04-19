@@ -28,14 +28,23 @@ class TestForm(FlaskForm):
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
     teggs = TextAreaField("Теги (через запятую)")
-    sub_teggs = SubmitField("Найти")
-    sub_name = SubmitField("Найти")
-    ar_teggs = TextAreaField("Тег:")
-    ar_name = TextAreaField("Назвавние:")
-    ar_id = TextAreaField("Id:")
-    sub_id = SubmitField("Найти")
 
 
 class Account_submit(FlaskForm):
     ac_id = IntegerField("Введите id аккаунта")
+    submit = SubmitField('Найти аккаунт')
+
+
+class Test_id(FlaskForm):
+    ar_id = IntegerField("Введите id теста")
+    submit = SubmitField('Найти аккаунт')
+
+
+class Test_name_submit(FlaskForm):
+    ar_name = TextAreaField("Введите имя теста")
+    submit = SubmitField('Найти аккаунт')
+
+
+class Test_teggs_submit(FlaskForm):
+    ar_teggs = TextAreaField("Введите  тегги теста")
     submit = SubmitField('Найти аккаунт')
