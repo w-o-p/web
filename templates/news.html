@@ -52,37 +52,39 @@
     <br>
     <p>
         <a href="/tests/add_quest" class="btn btn-success">{{ form.submit_con.label.text}}</a>
+        <a href="/tests/del_quest" class="btn btn-danger">{{ form.del_con.label.text}}</a>
     </p>
     {{message}}
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                {{ form.res_point.label }}
-                <br>
-                {{ form.res_point(class="form-control") }}<br>
-                {% for error in form.res_point.errors %}
-                    <p class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </p>
+                {% for item in form.res_point %}
+                    {{ item.label }}
+                    {{ item(class="form-control") }}
+                    {% for error in item.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
                 {% endfor %}
             </div>
             <div class="col-sm">
-                {{ form.result.label }}
-                <br>
-                {{ form.result(class="form-control") }}<br>
-                {% for error in form.result.errors %}
-                    <p class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </p>
+                {% for item in form.result %}
+                    {{ item.label }}
+                    {{ item(class="form-control") }}
+                    {% for error in item.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
                 {% endfor %}
-                </div>
+            </div>
         </div>
-        <a>{{ form.add_result(type="submit", class="btn btn-primary") }}</a>
+        <p>
+            <a href="add_result" class="btn btn-primary">{{ form.add_res.label.text }}</a>
+            <a href="del_result" class="btn btn-danger">{{ form.del_res.label.text }}</a>
+        </p>
     </div>
-    <br>
-    <!--
-    <p>{{ form.submit_res(type="submit", class="btn btn-success") }}</p>
-    -->
     <br>
     <p>
         {{ form.submit(type="submit", class="btn btn-danger") }}
