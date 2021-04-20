@@ -268,7 +268,8 @@ def edit_news(f):
             date = i
     except Exception:
         crea = 1
-    return render_template('test.html', name=name, content=content, id_t=id_t, user_id=user_id, date=date, crea=crea,
+    return render_template('test.html', name=name, content=content, id_t=id_t, user_id=user_id, date=date,
+                           crea=crea,
                            form=form)
 
 
