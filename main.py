@@ -401,10 +401,18 @@ def acc_page():
 @app.route('/acc_page_name', methods=['GET', 'POST'])
 def acc_page_name():
     form = Account_submit()
-    b = form.validate_on_submit()
-    if b:
-        a = "/acc_page_id/" + str(form.ac_name.data)
-        return redirect(a)
+    c = form.validate_on_submit()
+    db_sess = db_session.create_session()
+    if c:
+        try:
+            b = db_sess.query(User.id).filter(User.name == form.ac_name.data).first()
+            for i in b:
+                name = i
+            a = "/acc_page_id/" + str(name)
+            return redirect(a)
+        except Exception:
+            a = "/acc_page_id/99999999999999999999999999999999999999999"
+            return redirect(a)
     return render_template('acc_page_name.html', form=form)
 
 
