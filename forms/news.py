@@ -35,6 +35,7 @@ class TestForm(FlaskForm):
 
 class Account_submit(FlaskForm):
     ac_id = IntegerField("Введите id аккаунта")
+    ac_name = TextAreaField("Введите имя аккаунта")
     submit = SubmitField('Найти аккаунт')
 
 

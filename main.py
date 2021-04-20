@@ -388,7 +388,7 @@ def acc_page_id(f):
                            id_t2=id_t2, id_t3=id_t3, id_t4=id_t4, form=form)
 
 
-@app.route('/acc_page', methods=['GET', 'POST'])
+@app.route('/acc_page_id', methods=['GET', 'POST'])
 def acc_page():
     form = Account_submit()
     b = form.validate_on_submit()
@@ -396,6 +396,22 @@ def acc_page():
         a = "/acc_page_id/" + str(form.ac_id.data)
         return redirect(a)
     return render_template('acc_page.html', form=form)
+
+
+@app.route('/acc_page_name', methods=['GET', 'POST'])
+def acc_page_name():
+    form = Account_submit()
+    b = form.validate_on_submit()
+    if b:
+        a = "/acc_page_id/" + str(form.ac_name.data)
+        return redirect(a)
+    return render_template('acc_page_name.html', form=form)
+
+
+@app.route('/acc_page_search', methods=['GET', 'POST'])
+def acc_page_search():
+    form = Account_submit()
+    return render_template('acc_page_search.html', form=form)
 
 
 @app.route('/tests_delete/<int:id>', methods=['GET', 'POST'])

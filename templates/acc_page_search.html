@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <h2 align="middle">Поиск аккаунтов</h2>
+    <br>
+    <br>
+    <div align="middle">
+        <a href="/acc_page_id" class="btn btn-primary">Поиск по id</a>
+        <a href="/acc_page_name" class="btn btn-primary">Поиск по имени</a>
+    </div>
+</form>
+{% endblock %}
