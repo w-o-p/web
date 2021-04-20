@@ -69,6 +69,17 @@
                 {% endfor %}
             </div>
             <div class="col-sm">
+                {% for item in form.res_point_max %}
+                    {{ item.label }}
+                    {{ item(class="form-control") }}
+                    {% for error in item.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="col-sm">
                 {% for item in form.result %}
                     {{ item.label }}
                     {{ item(class="form-control") }}

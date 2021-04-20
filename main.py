@@ -33,13 +33,8 @@ def load_user(user_id):
 def index():
     db_sess = db_session.create_session()
     posts = 'Записи в блоге'
-    # news = db_sess.query(News).filter(News.is_private != True)
-    if current_user.is_authenticated:
-        news = db_sess.query(News).filter(
-            ((News.user == current_user) | (News.is_private != True) | current_user.admin))
-    else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news, posts=posts)
+    tests = db_sess.query(Tests)
+    return render_template("index.html", news=tests, posts=posts)
 
 
 @app.route("/search")
@@ -60,7 +55,7 @@ def search_name():
     db_sess = db_session.create_session()
     if c:
         try:
-            b = db_sess.query(News.id).filter(News.title == form.ar_name.data).first()
+            b = db_sess.query(Tests.id).filter(Tests.title == form.ar_name.data).first()
             for i in b:
                 name = i
             a = "/tests_page/" + str(name)
@@ -256,19 +251,19 @@ def edit_news(f):
     form = TestForm()
     db_sess = db_session.create_session()
     try:
-        b = db_sess.query(News.title).filter(News.id == f).first()
+        b = db_sess.query(Tests.title).filter(Tests.id == f).first()
         for i in b:
             name = i
-        c = db_sess.query(News.content).filter(News.id == f).first()
+        c = db_sess.query(Tests.content).filter(Tests.id == f).first()
         for i in c:
             content = i
-        d = db_sess.query(News.id).filter(News.id == f).first()
+        d = db_sess.query(Tests.id).filter(Tests.id == f).first()
         for i in d:
             id_t = i
-        e = db_sess.query(News.user_id).filter(News.id == f).first()
+        e = db_sess.query(Tests.user_id).filter(Tests.id == f).first()
         for i in e:
             user_id = i
-        f = db_sess.query(News.created_date).filter(News.id == f).first()
+        f = db_sess.query(Tests.created_date).filter(Tests.id == f).first()
         for i in f:
             date = i
     except Exception:
@@ -291,6 +286,7 @@ def acc_page_id(f):
     y1 = []
     x = []
     y = []
+    id_t = []
     t1 = ''
     t2 = ''
     t3 = ''
@@ -307,6 +303,10 @@ def acc_page_id(f):
     date = ''
     ad = 0
     a = 0
+    id_t1 = 0
+    id_t2 = 0
+    id_t3 = 0
+    id_t4 = 0
     id_a = 0
     try:
         b = db_sess.query(User.name).filter(User.id == f).first()
@@ -315,21 +315,28 @@ def acc_page_id(f):
         c = db_sess.query(User.about).filter(User.id == f).first()
         for i in c:
             description = i
-        e = db_sess.query(User.admin).filter(User.id == f).first()
-        for i in e:
-            if i:
-                ad = 1
-            else:
-                ad = 0
-        k = db_sess.query(News.title).filter(News.user_id == f)
+        lo = db_sess.query(User.id).filter(User.id == f).first()
+        for i in lo:
+            id_a = i
+        f12 = db_sess.query(User.created_date).filter(User.id == f).first()
+        for i in f12:
+            date = i
+    except Exception:
+        crea = 1
+    try:
+        k = db_sess.query(Tests.title).filter(Tests.user_id == f)
         for i in k:
             x1.append(i)
         for i in x1:
             for w in i:
                 x.append(w)
-        g = db_sess.query(News.content).filter(News.user_id == f)
+        g = db_sess.query(Tests.content).filter(Tests.user_id == f)
         for i in g:
             y1.append(i)
+        g12 = db_sess.query(Tests.id).filter(Tests.user_id == f)
+        for i in g12:
+            for w in i:
+                id_t.append(w)
         for i in y1:
             for w in i:
                 y.append(w)
@@ -342,6 +349,10 @@ def acc_page_id(f):
             t4 = x[3]
             des3 = y[2]
             des4 = y[3]
+            id_t1 = id_t[0]
+            id_t2 = id_t[1]
+            id_t3 = id_t[2]
+            id_t4 = id_t[3]
             a = 4
         elif len(x) == 3:
             t1 = x[0]
@@ -350,29 +361,31 @@ def acc_page_id(f):
             des2 = y[1]
             t3 = x[2]
             des3 = y[2]
+            id_t1 = id_t[0]
+            id_t2 = id_t[1]
+            id_t3 = id_t[2]
             a = 3
         elif len(x) == 2:
             t1 = x[0]
             des1 = y[0]
             t2 = x[1]
             des2 = y[1]
+            id_t1 = id_t[0]
+            id_t2 = id_t[1]
             a = 2
         elif len(x) == 1:
             t1 = x[0]
             des1 = y[0]
+            id_t1 = id_t[0]
             a = 1
         else:
             a = 0
-        lo = db_sess.query(User.id).filter(User.id == f).first()
-        for i in lo:
-            id_a = i
-        f = db_sess.query(User.created_date).filter(News.id == f).first()
-        for i in f:
-            date = i
     except Exception:
-        crea = 1
-    return render_template('acc_page_id.html', name=name, a=a, description=description, ad=ad, t1=t1, t2=t2, des1=des1,
-                           des2=des2, t3=t3, t4=t4, des3=des3, des4=des4, id_a=id_a, date=date, crea=crea, form=form)
+        a = 0
+
+    return render_template('acc_page_id.html', name=name, a=a, description=description, t1=t1, t2=t2, des1=des1,
+                           des2=des2, t3=t3, t4=t4, des3=des3, des4=des4, id_a=id_a, date=date, crea=crea, id_t1=id_t1,
+                           id_t2=id_t2, id_t3=id_t3, id_t4=id_t4, form=form)
 
 
 @app.route('/acc_page', methods=['GET', 'POST'])
@@ -390,11 +403,11 @@ def acc_page():
 def news_delete(id):
     db_sess = db_session.create_session()
     if not current_user.admin:
-        news = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
+        news = db_sess.query(Tests).filter(Tests.id == id,
+                                           Tests.user == current_user
+                                           ).first()
     else:
-        news = db_sess.query(News).filter(News.id == id).first()
+        news = db_sess.query(Tests).filter(Tests.id == id).first()
     if news:
         db_sess.delete(news)
         db_sess.commit()
