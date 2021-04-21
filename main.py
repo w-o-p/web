@@ -199,55 +199,40 @@ def add_test(action):
         new.entrcount = 1
         new.questcount = 1
         new.resultcount = 1
-    elif action == 'add_ans':  # пока что не вызывается но мб потом будет
+    elif action == 'add_ans':
         new.entrcount += 1
-        form.answer.min_entries = new.entrcount
-        while len(form.answer) < form.answer.min_entries:
-            form.answer.entries.append(form.answer.entries[0])
-        form.scores.min_entries = new.entrcount
-        while len(form.scores) < form.scores.min_entries:
-            form.scores.entries.append(form.scores.entries[0])
-    elif action == 'del_ans':  # пока что не вызывается но мб потом будет
-        new.entrcount -= 1
-        form.answer.min_entries = new.entrcount
-        while len(form.answer) < form.answer.min_entries:
-            form.answer.entries.append(form.answer.entries[0])
-        form.scores.min_entries = new.entrcount
-        while len(form.scores) < form.scores.min_entries:
-            form.scores.entries.append(form.scores.entries[0])
+    elif action == 'del_ans':
+        if new.entrcount > 1:
+            new.entrcount -= 1
     elif action == 'add_quest':
         new.questcount += 1
-        while len(form.questions) < new.questcount:
-            form.questions.append_entry(FormField(Answers))
     elif action == 'del_quest':
         if new.questcount > 1:
             new.questcount -= 1
-        while len(form.questions) < new.questcount:
-            form.questions.append_entry(FormField(Answers))
     elif action == 'add_result':
         new.resultcount += 1
-        while len(form.res_point) < new.resultcount:
-            form.res_point.append_entry(IntegerField("Больше стольки очков"))
-        while len(form.result) < new.resultcount:
-            form.result.append_entry(TextAreaField("Результат"))
-
-        for i in range(len(form.result.entries)):
-            form.result.entries[i].data = None
-        for i in range(len(form.result.data)):
-            form.result.data[i] = None
-
     elif action == 'del_result':
         if new.resultcount > 1:
             new.resultcount -= 1
-        while len(form.res_point) < new.resultcount:
-            form.res_point.append_entry(IntegerField("Больше стольки очков"))
-        while len(form.result) < new.resultcount:
-            form.result.append_entry(TextAreaField("Результат"))
 
-        for i in range(len(form.result.entries)):
-            form.result.entries[i].data = None
-        for i in range(len(form.result.data)):
-            form.result.data[i] = None
+    while len(form.questions) < new.questcount:
+        form.questions.append_entry(FormField(Answers))
+
+    while len(form.res_point) < new.resultcount:
+        form.res_point.append_entry(IntegerField("Больше стольки очков"))
+    while len(form.res_point_max) < new.resultcount:
+        form.res_point_max.append_entry(IntegerField("Больше стольки очков"))
+    while len(form.result) < new.resultcount:
+        form.result.append_entry(TextAreaField("Результат"))
+        form.result.entries[-1].data = None
+
+    for i in range(len(form.questions.entries)):
+        while len(form.questions.entries[i].form.answer) < new.entrcount:
+            form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
+            form.questions.entries[i].form.answer.entries[-1].data = None
+        while len(form.questions.entries[i].form.scores) < new.entrcount:
+            form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
+            form.questions.entries[i].form.scores.entries[-1].data = None
 
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 

@@ -9,8 +9,8 @@ resultcount = 1
 
 class Answers(FlaskForm):
     content = TextAreaField("Вопрос")
-    answer = FieldList(StringField('ответ'), min_entries=4)
-    scores = FieldList(IntegerField("Количество баллов"), min_entries=4)
+    answer = FieldList(StringField('ответ'), min_entries=1)
+    scores = FieldList(IntegerField("Количество баллов"), min_entries=1)
 
 
 class TestForm(FlaskForm):
