@@ -35,3 +35,28 @@ class Tests(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
     result = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+
+
+class Tegs(SqlAlchemyBase):
+    __tablename__ = 'tegs'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer,
+                           primary_key=True, autoincrement=True)
+    teg = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    test_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                sqlalchemy.ForeignKey("tests.id"))
+    test = orm.relation('Tests')
+
+
+class Comments(SqlAlchemyBase):
+    __tablename__ = 'comments'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer,
+                           primary_key=True, autoincrement=True)
+    com_name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    user_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                sqlalchemy.ForeignKey("users.id"))
+    user = orm.relation('User')
+    test_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                sqlalchemy.ForeignKey("tests.id"))
+    test = orm.relation('Tests')
