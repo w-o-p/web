@@ -3,13 +3,13 @@
 {% block content %}
 <form action="" method="post">
     {{ form.hidden_tag() }}
-    <h2 align="middle">Поиск по id</h2>
+    <h2 align="middle">Поиско имени</h2>
     <br>
     <br>
-    {{ form.ac_id.label }}
+    {{ form.ac_name.label }}
     <br>
-    {{ form.ac_id(class="form-control") }}<br>
-    {% for error in form.ac_id.errors %}
+    {{ form.ac_name(class="form-control") }}<br>
+    {% for error in form.ac_name.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
         </p>

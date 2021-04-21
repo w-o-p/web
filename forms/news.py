@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired
 
 entrcount = 1
 questcount = 1
+resultcount = 1
 
 
 class Answers(FlaskForm):
@@ -16,13 +17,15 @@ class TestForm(FlaskForm):
     name = StringField('Название теста', validators=[DataRequired()])
     description = TextAreaField("Описание")
     questions = FieldList(FormField(Answers), min_entries=1)
-    add_result = SubmitField('Создать результат')
     add_answer = SubmitField('Создать ответ')
     del_answer = SubmitField('Удалить ответ')
-    submit_con = SubmitField('Создать условие')
-    res_point = IntegerField("Больше столки очков")
-    result = TextAreaField("Результат")
-    submit_res = SubmitField('Сохранить результат')
+    submit_con = SubmitField('Создать вопрос')
+    del_con = SubmitField('Удалить вопрос')
+    res_point = FieldList(IntegerField("От стольки очков"), min_entries=1)
+    res_point_max = FieldList(IntegerField("До стольки очков"), min_entries=1)
+    result = FieldList(TextAreaField("Результат"), min_entries=1)
+    add_res = SubmitField('Создать результат')
+    del_res = SubmitField('Удалить результат')
     submit = SubmitField('Сохранить тест')
     run_test = SubmitField('Пройти тест')
     add_picture = SubmitField('Добавить изображение')
@@ -32,6 +35,7 @@ class TestForm(FlaskForm):
 
 class Account_submit(FlaskForm):
     ac_id = IntegerField("Введите id аккаунта")
+    ac_name = TextAreaField("Введите имя аккаунта")
     submit = SubmitField('Найти аккаунт')
 
 
