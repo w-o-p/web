@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, make_response, request, session, abort
 from data import db_session
 from data.users import User
-from data.news import News, Tests
+from data.news import News, Tests, Tegs, Comments
 from forms.user import RegisterForm, LoginForm
 from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_submit, Test_teggs_submit
 import forms.news as new
@@ -45,6 +45,19 @@ def search():
 @app.route("/search_teggs", methods=['GET', 'POST'])
 def search_teggs():
     form = Test_teggs_submit()
+    c = form.validate_on_submit()
+    k = ''
+    name = []
+    db_sess = db_session.create_session()
+    if c:
+        try:
+            b = db_sess.query(Tegs.test_id).filter(Tegs.teg == form.ar_teggs.data).first()
+            for i in b:
+                name = str(i)
+            k = "/tests_page/" + name
+            return redirect(k)
+        except Exception:
+            return redirect("/tests_page/999999999999999999999999999")
     return render_template("search_teggs.html", form=form)
 
 
@@ -263,14 +276,13 @@ def edit_news(f):
         e = db_sess.query(Tests.user_id).filter(Tests.id == f).first()
         for i in e:
             user_id = i
-        f = db_sess.query(Tests.created_date).filter(Tests.id == f).first()
-        for i in f:
+        j = db_sess.query(Tests.created_date).filter(Tests.id == f).first()
+        for i in j:
             date = i
     except Exception:
         crea = 1
     return render_template('test.html', name=name, content=content, id_t=id_t, user_id=user_id, date=date,
-                           crea=crea,
-                           form=form)
+                           crea=crea, form=form)
 
 
 @app.route('/tests_run', methods=['GET', 'POST'])
