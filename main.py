@@ -7,6 +7,7 @@ from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_sub
 import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
+from pickle import loads, dumps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -275,6 +276,51 @@ def edit_news(f):
 def run_news():
     form = TestForm()
     return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
+
+
+@app.route('/api_id/<int:f>', methods=['GET', 'POST'])
+@login_required
+def api_id(f):
+    db_sess = db_session.create_session()
+    id_t = []
+    title_id = []
+    con_t = []
+    x = []
+    try:
+        k1 = {}
+        b = db_sess.query(User.name).filter(User.id == f).first()
+        for i in b:
+            name = i
+        k1.update({"name": name})
+        b = db_sess.query(User.about).filter(User.id == f).first()
+        for i in b:
+            about = i
+        k1.update({"about": about})
+        b = db_sess.query(Tests.id).filter(Tests.user_id == f).all()
+        for w in b:
+            for i in w:
+                id_t.append(i)
+        b = db_sess.query(Tests.title).filter(Tests.user_id == f).all()
+        for w in b:
+            for i in w:
+                title_id.append(i)
+        b = db_sess.query(Tests.content).filter(Tests.user_id == f).all()
+        for w in b:
+            for i in w:
+                con_t.append(i)
+        if len(id_t) > 0:
+            for i in range(len(id_t)):
+                x = []
+                id_l = i + 1
+                x.append(id_t[i])
+                x.append(title_id[i])
+                x.append(con_t[i])
+                k1.update({id_l:x})
+        print(k1)
+        k = dumps(k1)
+    except Exception:
+        k = "Данного аккаунта не существует"
+    return k
 
 
 @app.route('/acc_page_id//<int:f>', methods=['GET', 'POST'])
