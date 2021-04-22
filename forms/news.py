@@ -32,7 +32,7 @@ class TestForm(FlaskForm):
     run_test = SubmitField('Пройти тест')
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
-    teggs = TextAreaField("Теги (через запятую)")
+    teggs = TextAreaField("Теги (через ; пробелов)")
 
 
 class Account_submit(FlaskForm):

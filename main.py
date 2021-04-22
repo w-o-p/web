@@ -171,69 +171,69 @@ def add_test(action):
     if form.validate_on_submit():  # сохранение в sql
         # print(form.questions.data)  # Условие 1;%ответ 1;$баллы;%ответ 2;$баллы;условие 2
         # print(form.result.data)
+        if form.data['submit']:
+            st = ''
+            for i in range(len(form.questions.data)):
+                st += form.questions.data[i]['content'] + ';'
+                for j in range(len(form.questions.data[i]['answer'])):
+                    st += '%' + form.questions.data[i]['answer'][j] + ';'
+                    st += '$' + str(form.questions.data[i]['scores'][j]) + ';'
 
-        st = ''
-        for i in range(len(form.questions.data)):
-            st += form.questions.data[i]['content'] + ';'
-            for j in range(len(form.questions.data[i]['answer'])):
-                st += '%' + form.questions.data[i]['answer'][j] + ';'
-                st += '$' + str(form.questions.data[i]['scores'][j]) + ';'
+            st2 = ''  # TODO собрать сюда результаты
 
-        st2 = ''  # TODO собрать сюда результаты
+            # print(st)
 
-        # print(st)
+            db_sess = db_session.create_session()
+            test = Tests()
+            test.title = form.name.data
+            test.content = form.description.data
+            test.tegs = form.teggs.data
+            test.questions = st
+            test.user_id = current_user.get_id()
+            test.result = st2
+            db_sess.add(test)
+            db_sess.commit()
 
-        db_sess = db_session.create_session()
-        test = Tests()
-        test.title = form.name.data
-        test.content = form.description.data
-        test.tegs = form.teggs.data
-        test.questions = st
-        test.user_id = current_user.get_id()
-        test.result = st2
-        db_sess.add(test)
-        db_sess.commit()
+            return redirect('/')
 
-        return redirect('/')
+    if form.data['add_answer']:
+        new.anscount += 1
+        for i in range(len(form.questions.entries)):
+            form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
+            form.questions.entries[i].form.answer.entries[-1].data = None
+
+            form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
+            form.questions.entries[i].form.scores.entries[-1].data = None
+    elif form.data['del_answer']:
+        if new.anscount > 1:
+            new.anscount -= 1
+            for i in range(len(form.questions.entries)):
+                form.questions.entries[i].form.answer.pop_entry()
+                form.questions.entries[i].form.scores.pop_entry()
+    elif form.data['submit_con']:
+        new.questcount += 1
+        form.questions.append_entry(FormField(Answers))
+    elif form.data['del_con']:
+        if new.questcount > 1:
+            new.questcount -= 1
+            form.questions.pop_entry()
+    elif form.data['add_res']:
+        new.resultcount += 1
+        form.res_point.append_entry(IntegerField("Больше стольки очков"))
+        form.res_point_max.append_entry(IntegerField("Больше стольки очков"))
+        form.result.append_entry(TextAreaField("Результат"))
+        form.result.entries[-1].data = None
+    elif form.data['del_res']:
+        if new.resultcount > 1:
+            new.resultcount -= 1
+            form.res_point.pop_entry()
+            form.res_point_max.pop_entry()
+            form.result.pop_entry()
 
     elif action == 'create':
         new.anscount = 1
         new.questcount = 1
         new.resultcount = 1
-    elif action == 'add_ans':
-        new.anscount += 1
-    elif action == 'del_ans':
-        if new.anscount > 1:
-            new.anscount -= 1
-    elif action == 'add_quest':
-        new.questcount += 1
-    elif action == 'del_quest':
-        if new.questcount > 1:
-            new.questcount -= 1
-    elif action == 'add_result':
-        new.resultcount += 1
-    elif action == 'del_result':
-        if new.resultcount > 1:
-            new.resultcount -= 1
-
-    while len(form.questions) < new.questcount:
-        form.questions.append_entry(FormField(Answers))
-
-    while len(form.res_point) < new.resultcount:
-        form.res_point.append_entry(IntegerField("Больше стольки очков"))
-    while len(form.res_point_max) < new.resultcount:
-        form.res_point_max.append_entry(IntegerField("Больше стольки очков"))
-    while len(form.result) < new.resultcount:
-        form.result.append_entry(TextAreaField("Результат"))
-        form.result.entries[-1].data = None
-
-    for i in range(len(form.questions.entries)):
-        while len(form.questions.entries[i].form.answer) < new.anscount:
-            form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
-            form.questions.entries[i].form.answer.entries[-1].data = None
-        while len(form.questions.entries[i].form.scores) < new.anscount:
-            form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
-            form.questions.entries[i].form.scores.entries[-1].data = None
 
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 
