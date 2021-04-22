@@ -1,11 +1,7 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Таблица размеров обуви</title>
-</head>
-<body>
-<table border="1">
+{% extends "base.html" %}
+
+{% block content %}
+<table border="1" align="center">
     <caption>Таблица размеров обуви</caption>
     <tr>
         <th>Россия</th>
@@ -140,5 +136,4 @@
         <td>31,5</td>
     </tr>
 </table>
-</body>
-</html>
+{% endblock %}

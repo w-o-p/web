@@ -3,7 +3,7 @@ from data import db_session
 from data.users import User
 from data.news import News, Tests, Tegs, Comments
 from forms.user import RegisterForm, LoginForm
-from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_submit, Test_teggs_submit
+from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_submit, Test_teggs_submit, TestAnswers
 import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
@@ -197,14 +197,14 @@ def add_test(action):
         return redirect('/')
 
     elif action == 'create':
-        new.entrcount = 1
+        new.anscount = 1
         new.questcount = 1
         new.resultcount = 1
     elif action == 'add_ans':
-        new.entrcount += 1
+        new.anscount += 1
     elif action == 'del_ans':
-        if new.entrcount > 1:
-            new.entrcount -= 1
+        if new.anscount > 1:
+            new.anscount -= 1
     elif action == 'add_quest':
         new.questcount += 1
     elif action == 'del_quest':
@@ -228,19 +228,71 @@ def add_test(action):
         form.result.entries[-1].data = None
 
     for i in range(len(form.questions.entries)):
-        while len(form.questions.entries[i].form.answer) < new.entrcount:
+        while len(form.questions.entries[i].form.answer) < new.anscount:
             form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
             form.questions.entries[i].form.answer.entries[-1].data = None
-        while len(form.questions.entries[i].form.scores) < new.entrcount:
+        while len(form.questions.entries[i].form.scores) < new.anscount:
             form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
             form.questions.entries[i].form.scores.entries[-1].data = None
 
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 
 
+@app.route('/tests_run/<int:num>', methods=['GET', 'POST'])
+@login_required
+def run_news(num):
+    form = TestAnswers()
+    if form.data['submit']:  # надеюсь будет работать
+        new.answersp.append(form.data['answers'])
+        new.numquest += 1
+        redirect('/tests_run/{}'.format(num))
+    db_sess = db_session.create_session()
+    all_values = db_sess.query(Tests).filter(Tests.id == num).first()
+    title = all_values.title
+    cicle = 0
+    question = ''
+    answers = []
+    scores = []
+    parsed_quest = all_values.questions.split(';')
+    del parsed_quest[-1]
+    num_q = len(list(filter(lambda x: x[0] != '$' and x[0] != '%', parsed_quest)))
+    if num_q <= len(new.answersp):
+        return redirect('/tests_run/end/{}'.format(num))
+    else:
+        for i in range(len(parsed_quest)):
+            if parsed_quest[i][0] == '%':
+                if cicle - 1 == len(new.answersp):
+                    answers.append(parsed_quest[i][1::])
+            elif parsed_quest[i][0] == '$':
+                if cicle - 1 == len(new.answersp):
+                    scores.append(parsed_quest[i][1::])
+            else:
+                cicle += 1
+                if cicle - 1 == len(new.answersp):
+                    question = parsed_quest[i]
+            if cicle > new.numquest:
+                break
+
+        for i in range(len(answers)):
+            form.answers.choices.append((int(scores[i]), answers[i]))
+
+        # form.answers.choices.append(('val2', 'dont choose this'))
+        return render_template('run_test.html', title=title, num=len(new.answersp) + 1, form=form, question=question)
+
+
+@app.route('/tests_run/end/<int:num>', methods=['GET', 'POST'])
+def end(num):
+    new.numquest = 1
+    new.answersp = []
+    return '<a href="/">еще не сделал<a/>'
+
+
 @app.route('/tests_page//<int:f>', methods=['GET', 'POST'])
 @login_required
 def edit_news(f):
+    new.answersp = []
+    new.numquest = 1
+
     name = ''
     content = ''
     id_t = 0
@@ -269,13 +321,6 @@ def edit_news(f):
         crea = 1
     return render_template('test.html', name=name, content=content, id_t=id_t, user_id=user_id, date=date,
                            crea=crea, form=form)
-
-
-@app.route('/tests_run', methods=['GET', 'POST'])
-@login_required
-def run_news():
-    form = TestForm()
-    return render_template('run_test.html', title="Какой ты хлеб?", num="1", form=form)
 
 
 @app.route('/api_id/<int:f>', methods=['GET', 'POST'])
@@ -315,8 +360,8 @@ def api_id(f):
                 x.append(id_t[i])
                 x.append(title_id[i])
                 x.append(con_t[i])
-                k1.update({id_l:x})
-        print(k1)
+                k1.update({id_l: x})
+        # print(k1)
         k = dumps(k1)
     except Exception:
         k = "Данного аккаунта не существует"
@@ -482,6 +527,11 @@ def news_delete(id):
     else:
         abort(404)
     return redirect('/')
+
+
+@app.route('/secret')
+def sec():
+    return render_template('table.html', title='пасхалочка')
 
 
 if __name__ == '__main__':

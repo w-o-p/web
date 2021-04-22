@@ -1,10 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
+from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField, RadioField
 from wtforms.validators import DataRequired
 
-entrcount = 1
+anscount = 1
 questcount = 1
 resultcount = 1
+answersp = []
+numquest = 1
 
 
 class Answers(FlaskForm):
@@ -52,3 +54,8 @@ class Test_name_submit(FlaskForm):
 class Test_teggs_submit(FlaskForm):
     ar_teggs = TextAreaField("Введите  тегги теста")
     submit = SubmitField('Найти аккаунт')
+
+
+class TestAnswers(FlaskForm):
+    answers = RadioField('Ответы', choices=[])
+    submit = SubmitField('Отправить ответ')
