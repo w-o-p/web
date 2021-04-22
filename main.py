@@ -1,13 +1,13 @@
 from flask import Flask, render_template, redirect, make_response, request, session, abort
 from data import db_session
 from data.users import User
-from data.news import News, Tests, Tegs, Comments
+from data.news import Tests, Tegs
 from forms.user import RegisterForm, LoginForm
 from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_submit, Test_teggs_submit, TestAnswers
 import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
-from pickle import loads, dumps
+from wtforms import StringField, TextAreaField, IntegerField, FormField
+from pickle import dumps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -179,7 +179,12 @@ def add_test(action):
                     st += '%' + form.questions.data[i]['answer'][j] + ';'
                     st += '$' + str(form.questions.data[i]['scores'][j]) + ';'
 
-            st2 = ''  # TODO собрать сюда результаты
+            sp2 = []  # TODO собрать сюда результаты
+
+            for i in range(len(form.res_point.data)):
+                sp2.append('{}-{};{}'.format(form.res_point.data[i], form.res_point_max.data[i], form.result.data[i]))
+
+            st2 = ';'.join(sp2)
 
             # print(st)
 
@@ -283,6 +288,7 @@ def run_news(num):
 @app.route('/tests_run/end/<int:num>', methods=['GET', 'POST'])
 def end(num):
     new.numquest = 1
+
     new.answersp = []
     return '<a href="/">еще не сделал<a/>'
 
@@ -317,6 +323,12 @@ def edit_news(f):
         j = db_sess.query(Tests.created_date).filter(Tests.id == f).first()
         for i in j:
             date = i
+
+        if form.data['run_test']:
+            new.answersp = []
+            new.numquest = 1
+            return redirect('/tests_run/{}'.format(id_t))
+
     except Exception:
         crea = 1
     return render_template('test.html', name=name, content=content, id_t=id_t, user_id=user_id, date=date,

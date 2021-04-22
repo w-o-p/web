@@ -2,6 +2,7 @@
 
 {% block content %}
 <form action="" method="post">
+    {{ form.hidden_tag() }}
     {% if crea == 0 %}
         <h1 align="centre">{{name}}</h1>
         <p>Описание: {{content}}</p>
@@ -10,7 +11,8 @@
         <p>дата создания:{{date}}</p>
         <br>
         <br>
-        <a href="/tests_run/{{id_t}}" class="btn btn-primary">Пройти тест</a>
+        <!--<a href="/tests_run/{{id_t}}" class="btn btn-primary">Пройти тест</a>-->
+        {{ form.run_test(type="submit", class="btn btn-primary") }}
     {% else %}
         <br>
         <br>
