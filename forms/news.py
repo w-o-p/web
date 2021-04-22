@@ -1,16 +1,18 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField
+from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField, RadioField
 from wtforms.validators import DataRequired
 
-entrcount = 1
+anscount = 1
 questcount = 1
 resultcount = 1
+answersp = []
+numquest = 1
 
 
 class Answers(FlaskForm):
     content = TextAreaField("Вопрос")
-    answer = FieldList(StringField('ответ'), min_entries=4)
-    scores = FieldList(IntegerField("Количество баллов"), min_entries=4)
+    answer = FieldList(StringField('ответ'), min_entries=1)
+    scores = FieldList(IntegerField("Количество баллов"), min_entries=1)
 
 
 class TestForm(FlaskForm):
@@ -30,7 +32,7 @@ class TestForm(FlaskForm):
     run_test = SubmitField('Пройти тест')
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
-    teggs = TextAreaField("Теги (через запятую)")
+    teggs = TextAreaField("Теги (через ; пробелов)")
 
 
 class Account_submit(FlaskForm):
@@ -52,3 +54,8 @@ class Test_name_submit(FlaskForm):
 class Test_teggs_submit(FlaskForm):
     ar_teggs = TextAreaField("Введите  тегги теста")
     submit = SubmitField('Найти аккаунт')
+
+
+class TestAnswers(FlaskForm):
+    answers = RadioField('Ответы', choices=[])
+    submit = SubmitField('Отправить ответ')
