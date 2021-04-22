@@ -179,10 +179,10 @@ def add_test(action):
                     st += '%' + form.questions.data[i]['answer'][j] + ';'
                     st += '$' + str(form.questions.data[i]['scores'][j]) + ';'
 
-            sp2 = []  # TODO собрать сюда результаты
+            sp2 = []
 
             for i in range(len(form.res_point.data)):
-                sp2.append('{}-{};{}'.format(form.res_point.data[i], form.res_point_max.data[i], form.result.data[i]))
+                sp2.append('{}-{};&{}'.format(form.res_point.data[i], form.res_point_max.data[i], form.result.data[i]))
 
             st2 = ';'.join(sp2)
 
@@ -244,10 +244,9 @@ def add_test(action):
 
 
 @app.route('/tests_run/<int:num>', methods=['GET', 'POST'])
-@login_required
 def run_news(num):
     form = TestAnswers()
-    if form.data['submit']:  # надеюсь будет работать
+    if form.data['submit'] and form.data['answers'] is not None:  # надеюсь будет работать
         new.answersp.append(form.data['answers'])
         new.numquest += 1
         redirect('/tests_run/{}'.format(num))
@@ -288,13 +287,27 @@ def run_news(num):
 @app.route('/tests_run/end/<int:num>', methods=['GET', 'POST'])
 def end(num):
     new.numquest = 1
-
+    sum_ans = sum(list(map(int, new.answersp)))
     new.answersp = []
-    return '<a href="/">еще не сделал<a/>'
+    db_sess = db_session.create_session()
+    all_results = db_sess.query(Tests).filter(Tests.id == num).first()
+    parsed_res = all_results.result.split(';')
+    test_result = ''
+    results = []
+    scrs = []
+    for i in range(len(parsed_res)):
+        if parsed_res[i][0] == '&':
+            results.append(parsed_res[i][1::])
+        else:
+            scrs.append(parsed_res[i].split('-'))
+    for i in range(len(scrs)):
+        if int(scrs[i][0]) <= sum_ans < int(scrs[i][1]):
+            test_result = results[i]
+    # '<a href="/">еще не сделал<a/> <br/> <p>{}<p/>'.format(test_result)
+    return render_template('test_end.html', test_result=test_result)
 
 
 @app.route('/tests_page//<int:f>', methods=['GET', 'POST'])
-@login_required
 def edit_news(f):
     new.answersp = []
     new.numquest = 1
@@ -336,7 +349,6 @@ def edit_news(f):
 
 
 @app.route('/api_id/<int:f>', methods=['GET', 'POST'])
-@login_required
 def api_id(f):
     db_sess = db_session.create_session()
     id_t = []
@@ -381,7 +393,6 @@ def api_id(f):
 
 
 @app.route('/acc_page_id//<int:f>', methods=['GET', 'POST'])
-@login_required
 def acc_page_id(f):
     x1 = []
     y1 = []
