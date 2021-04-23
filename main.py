@@ -218,6 +218,13 @@ def add_test(action):
     elif form.data['submit_con']:
         new.questcount += 1
         form.questions.append_entry(FormField(Answers))
+
+        while len(form.questions.entries[-1].form.answer) < len(form.questions.entries[0].form.answer):
+            form.questions.entries[-1].form.answer.append_entry(StringField('ответ'))
+            form.questions.entries[-1].form.answer.entries[-1].data = None
+
+            form.questions.entries[-1].form.scores.append_entry(IntegerField("Количество баллов"))
+            form.questions.entries[-1].form.scores.entries[-1].data = None
     elif form.data['del_con']:
         if new.questcount > 1:
             new.questcount -= 1

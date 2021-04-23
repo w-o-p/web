@@ -47,7 +47,7 @@
         </a>
         {% if current_user.is_authenticated %}
         <p>
-            <a href="/secret">
+            <a href="/acc_page_id//{{current_user.id}}">
                 <b class="navbar-brand">{{ current_user.name }}</b>
             </a>
             <a class="btn btn-dark" href="/logout">Выйти</a>
