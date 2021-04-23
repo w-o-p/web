@@ -219,7 +219,7 @@ def add_test(action):
         new.questcount += 1
         form.questions.append_entry(FormField(Answers))
 
-        while len(form.questions.entries[-1].form.answer) < new.anscount:
+        while len(form.questions.entries[-1].form.answer) < len(form.questions.entries[0].form.answer):
             form.questions.entries[-1].form.answer.append_entry(StringField('ответ'))
             form.questions.entries[-1].form.answer.entries[-1].data = None
 
