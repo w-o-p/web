@@ -202,7 +202,6 @@ def add_test(action):
             return redirect('/')
 
     if form.data['add_answer']:
-        new.anscount += 1
         for i in range(len(form.questions.entries)):
             form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
             form.questions.entries[i].form.answer.entries[-1].data = None
@@ -210,13 +209,11 @@ def add_test(action):
             form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
             form.questions.entries[i].form.scores.entries[-1].data = None
     elif form.data['del_answer']:
-        if new.anscount > 1:
-            new.anscount -= 1
+        if len(form.questions.entries[0].form.answer) > 1:
             for i in range(len(form.questions.entries)):
                 form.questions.entries[i].form.answer.pop_entry()
                 form.questions.entries[i].form.scores.pop_entry()
     elif form.data['submit_con']:
-        new.questcount += 1
         form.questions.append_entry(FormField(Answers))
 
         while len(form.questions.entries[-1].form.answer) < len(form.questions.entries[0].form.answer):
@@ -226,26 +223,18 @@ def add_test(action):
             form.questions.entries[-1].form.scores.append_entry(IntegerField("Количество баллов"))
             form.questions.entries[-1].form.scores.entries[-1].data = None
     elif form.data['del_con']:
-        if new.questcount > 1:
-            new.questcount -= 1
+        if len(form.questions) > 1:
             form.questions.pop_entry()
     elif form.data['add_res']:
-        new.resultcount += 1
         form.res_point.append_entry(IntegerField("Больше стольки очков"))
         form.res_point_max.append_entry(IntegerField("Больше стольки очков"))
         form.result.append_entry(TextAreaField("Результат"))
         form.result.entries[-1].data = None
     elif form.data['del_res']:
-        if new.resultcount > 1:
-            new.resultcount -= 1
+        if len(form.res_point) > 1:
             form.res_point.pop_entry()
             form.res_point_max.pop_entry()
             form.result.pop_entry()
-
-    elif action == 'create':
-        new.anscount = 1
-        new.questcount = 1
-        new.resultcount = 1
 
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 
@@ -254,9 +243,8 @@ def add_test(action):
 def run_news(num):
     form = TestAnswers()
     if form.data['submit'] and form.data['answers'] is not None:  # надеюсь будет работать
-        new.answersp.append(form.data['answers'])
-        new.numquest += 1
-        redirect('/tests_run/{}'.format(num))
+        form.sp.append(form.data['answers'])
+        return redirect('/tests_run/{}'.format(num))
     db_sess = db_session.create_session()
     all_values = db_sess.query(Tests).filter(Tests.id == num).first()
     title = all_values.title
@@ -267,35 +255,36 @@ def run_news(num):
     parsed_quest = all_values.questions.split(';')
     del parsed_quest[-1]
     num_q = len(list(filter(lambda x: x[0] != '$' and x[0] != '%', parsed_quest)))
-    if num_q <= len(new.answersp):
-        return redirect('/tests_run/end/{}'.format(num))
+    print(form.sp)
+    if num_q <= len(form.sp):
+        s = sum(list(map(int, form.sp)))
+        TestAnswers.sp = []
+        return redirect('/tests_run/end/{}&{}'.format(num, s))
     else:
         for i in range(len(parsed_quest)):
             if parsed_quest[i][0] == '%':
-                if cicle - 1 == len(new.answersp):
+                if cicle - 1 == len(form.sp):
                     answers.append(parsed_quest[i][1::])
             elif parsed_quest[i][0] == '$':
-                if cicle - 1 == len(new.answersp):
+                if cicle - 1 == len(form.sp):
                     scores.append(parsed_quest[i][1::])
             else:
                 cicle += 1
-                if cicle - 1 == len(new.answersp):
+                if cicle - 1 == len(form.sp):
                     question = parsed_quest[i]
-            if cicle > new.numquest:
+            if cicle > len(form.sp) + 1:
                 break
 
         for i in range(len(answers)):
             form.answers.choices.append((int(scores[i]), answers[i]))
 
         # form.answers.choices.append(('val2', 'dont choose this'))
-        return render_template('run_test.html', title=title, num=len(new.answersp) + 1, form=form, question=question)
+        return render_template('run_test.html', title=title, num=len(form.sp) + 1, form=form, question=question)
 
 
-@app.route('/tests_run/end/<int:num>', methods=['GET', 'POST'])
-def end(num):
-    new.numquest = 1
-    sum_ans = sum(list(map(int, new.answersp)))
-    new.answersp = []
+@app.route('/tests_run/end/<int:num>&<int:s>', methods=['GET', 'POST'])
+def end(num, s):
+    sum_ans = s
     db_sess = db_session.create_session()
     all_results = db_sess.query(Tests).filter(Tests.id == num).first()
     parsed_res = all_results.result.split(';')
@@ -316,9 +305,6 @@ def end(num):
 
 @app.route('/tests_page//<int:f>', methods=['GET', 'POST'])
 def edit_news(f):
-    new.answersp = []
-    new.numquest = 1
-
     name = ''
     content = ''
     id_t = 0
@@ -345,8 +331,6 @@ def edit_news(f):
             date = i
 
         if form.data['run_test']:
-            new.answersp = []
-            new.numquest = 1
             return redirect('/tests_run/{}'.format(id_t))
 
     except Exception:
