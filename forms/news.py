@@ -2,12 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, IntegerField, FieldList, FormField, RadioField
 from wtforms.validators import DataRequired
 
-anscount = 1
-questcount = 1
-resultcount = 1
-answersp = []
-numquest = 1
-
 
 class Answers(FlaskForm):
     content = TextAreaField("Вопрос")
@@ -59,3 +53,5 @@ class Test_teggs_submit(FlaskForm):
 class TestAnswers(FlaskForm):
     answers = RadioField('Ответы', choices=[])
     submit = SubmitField('Отправить ответ')
+
+    sp = []

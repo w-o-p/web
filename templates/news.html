@@ -53,14 +53,14 @@
     <p>
         <!--<a href="/tests/add_quest" class="btn btn-success">{{ form.submit_con.label.text}}</a>
         <a href="/tests/del_quest" class="btn btn-danger">{{ form.del_con.label.text}}</a>-->
-        {{ form.submit_con(type="submit", class="btn btn-success") }}
-        {{ form.del_con(type="submit", class="btn btn-danger") }}
+        {{ form.submit_con(type="submit", class="btn") }}
+        {{ form.del_con(type="submit", class="btn") }}
     </p>
     <p>
         <!--<a href="/tests/add_ans" class="btn btn-success">{{ form.add_answer.label.text}}</a>
         <a href="/tests/del_ans" class="btn btn-danger">{{ form.del_answer.label.text}}</a>-->
-        {{ form.add_answer(type="submit", class="btn btn-success") }}
-        {{ form.del_answer(type="submit", class="btn btn-danger") }}
+        {{ form.add_answer(type="submit", class="btn") }}
+        {{ form.del_answer(type="submit", class="btn") }}
     </p>
     {{message}}
     <div class="container">
@@ -102,13 +102,13 @@
         <p>
             <!--<a href="add_result" class="btn btn-primary">{{ form.add_res.label.text }}</a>
             <a href="del_result" class="btn btn-danger">{{ form.del_res.label.text }}</a>-->
-            {{ form.add_res(type="submit", class="btn btn-primary") }}
-            {{ form.del_res(type="submit", class="btn btn-danger") }}
+            {{ form.add_res(type="submit", class="btn") }}
+            {{ form.del_res(type="submit", class="btn") }}
         </p>
     </div>
     <br>
     <p>
-        {{ form.submit(type="submit", class="btn btn-danger") }}
+        {{ form.submit(type="submit", class="btn") }}
     </p>
 </form>
 

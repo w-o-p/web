@@ -4,34 +4,36 @@
 <h1 align="center">Записи в блоге</h1>
 {% if current_user.is_authenticated %}
 <p align="center">
-    <a href="tests/create" class="btn btn-secondary">Добавить тест</a>
+    <a href="tests/create" class="btn">Добавить тест</a>
 </p>
 {% endif %}
-{% for item in news%}
-<div class="col-md6 border rounded" align="center">
-    <h2>{{item.title}}</h2>
-    <div>
-        {{item.content}}
+<div class="in_back">
+        {% for item in news%}
+    <div class="col-md6 border rounded" align="center">
+        <h2>{{item.title}}</h2>
+        <div>
+            {{item.content}}
+        </div>
+        <div>
+            Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+        </div>
+        {% if current_user.is_authenticated and (current_user == item.user or current_user.admin) %}
+        <div>
+            <a href="/tests_delete/{{ item.id }}" class="btn">
+                Удалить
+            </a>
+            <a href="/tests_page/{{item.id}}" class="btn">
+                Пройти тест
+            </a>
+        </div>
+        {% else %}
+           <div>
+               <a href="/tests_page/{{item.id}}" class="btn">
+                Пройти тест
+            </a>
+           </div>
+        {% endif %}
     </div>
-    <div>
-        Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
-    </div>
-    {% if current_user.is_authenticated and (current_user == item.user or current_user.admin) %}
-    <div>
-        <a href="/tests_delete/{{ item.id }}" class="btn btn-danger">
-            Удалить
-        </a>
-        <a href="/tests_page/{{item.id}}" class="btn btn-success">
-            Пройти тест
-        </a>
-    </div>
-    {% else %}
-       <div>
-           <a href="/tests_page/{{item.id}}" class="btn btn-success">
-            Пройти тест
-        </a>
-       </div>
-    {% endif %}
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}
