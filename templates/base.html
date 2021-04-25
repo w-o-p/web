@@ -9,60 +9,86 @@
           crossorigin="anonymous">
     <title>{{title}}</title>
     <style>
-        .bgr {
-            font-size: 16px;
-            }
+    .left_nav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    overflow-x: hidden;
+    padding-top: 20px;
+    }
+    .up_site {
+    width: 100%;
+    background-color: #000000;
+    }
+    .site {
+    height: 100%
+    width: 100%;
+    background-color: #000000;
+    }
+    .font {
+    background-color: #000000;
+    color: #ffffff;
+    }
+    .in_back {
+    background-color: #333;
+    }
+    .btn {
+        background-color: #B8860B;
+        color: white;
+    }
 
-        li {
-            list-style-type: none; /* Убираем маркеры */
-            }
-        ul {
-            margin-left: 0; /* Отступ слева в браузере IE и Opera */
-            padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
-           }
-        caption {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            color: #6c757d;
-            text-align: center;
-            caption-side: top;
-                }
     </style>
 </head>
-<body>
+<body class="site">
 <header>
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="/">All tests</a>
-        <a href="/" class="btn btn-secondary">
-        Основная
+    <div class="left_nav">
+        <a class="text-light" href="/">All tests</a>
+        <br>
+        <br>
+        <a href="/" class="text-light">
+            Основная
         </a>
-        <a href="/tests/create" class="btn btn-secondary">
+        <br>
+        <br>
+        <a href="/tests/create" class="text-light">
             Создать тест
         </a>
-        <a href="/search" class="btn btn-secondary">
+        <br>
+        <br>
+        <a href="/search" class="text-light">
             Поиск тестов
         </a>
-        <a href="/acc_page_search" class="btn btn-secondary">
+        <br>
+        <br>
+        <a href="/acc_page_search" class="text-light">
             Поиск аккаунтов
         </a>
+    </div>
+    <div align="right" class="up_site">
         {% if current_user.is_authenticated %}
         <p>
             <a href="/acc_page_id//{{current_user.id}}">
-                <b class="navbar-brand">{{ current_user.name }}</b>
+                <b class="text-light">{{ current_user.name }}</b>
             </a>
-            <a class="btn btn-dark" href="/logout">Выйти</a>
+            <a class="btn" href="/logout">Выйти</a>
         </p>
         {% else %}
         <p>
-            <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
-            <a class="btn btn-success" href="/login">Войти</a>
+            <a class="btn" href="/register">Зарегистрироваться</a>
+            <a class="btn" href="/login">Войти</a>
         </p>
         {% endif %}
-    </nav>
+    </div>
 </header>
 <!-- Begin page content -->
 <main role="main" class="container">
-    {% block content %}{% endblock %}
+    <div class="font">
+        {% block content %}{% endblock %}
+    </div>
 </main>
 </body>
 </html>

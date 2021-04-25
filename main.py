@@ -1,13 +1,14 @@
+from pickle import dumps
+
 from flask import Flask, render_template, redirect, make_response, request, session, abort
-from data import db_session
-from data.users import User
-from data.news import Tests, Tegs
-from forms.user import RegisterForm, LoginForm
-from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_submit, Test_teggs_submit, TestAnswers
-import forms.news as new
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from wtforms import StringField, TextAreaField, IntegerField, FormField
-from pickle import dumps
+
+from data import db_session
+from data.news import Tests, Tegs
+from data.users import User
+from forms.news import TestForm, Account_submit, Answers, Test_id, Test_name_submit, Test_teggs_submit, TestAnswers
+from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
