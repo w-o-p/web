@@ -7,14 +7,14 @@ class Answers(FlaskForm):
     content = TextAreaField("Вопрос")
     answer = FieldList(StringField('ответ'), min_entries=1)
     scores = FieldList(IntegerField("Количество баллов"), min_entries=1)
+    add_answer = SubmitField('Создать ответ')
+    del_answer = SubmitField('Удалить ответ')
 
 
 class TestForm(FlaskForm):
     name = StringField('Название теста', validators=[DataRequired()])
     description = TextAreaField("Описание")
     questions = FieldList(FormField(Answers), min_entries=1)
-    add_answer = SubmitField('Создать ответ')
-    del_answer = SubmitField('Удалить ответ')
     submit_con = SubmitField('Создать вопрос')
     del_con = SubmitField('Удалить вопрос')
     res_point = FieldList(IntegerField("От стольки очков"), min_entries=1)
@@ -26,7 +26,7 @@ class TestForm(FlaskForm):
     run_test = SubmitField('Пройти тест')
     add_picture = SubmitField('Добавить изображение')
     but_answer = SubmitField("Выбрать")
-    teggs = TextAreaField("Теги (через ; пробелов)")
+    teggs = TextAreaField("Теги (через ; без пробелов)")
 
 
 class Account_submit(FlaskForm):

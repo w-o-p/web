@@ -33,21 +33,73 @@
     <div>
     </div>
     <div class="container">
-        <div class="row">
+        {% for item in form.questions %}
+            {% set n_quest = loop.index %}
+            {% for it in item %}
+                {% if loop.index == 1 %}
+                    <div class="row">
+                    {{ it.label }} {{ n_quest }}
+                    {{ it(class="form-control") }}
+                    {% for error in it.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                    </div>
+                    <br>
 
-            {% for item in form.questions %}
-                {{ item }}
-                {% for error in item.errors %}
-                    <p class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </p>
-                {% endfor %}
+                {% elif loop.index == 2 %}
+                    {% for i in it %}
+                        <div class="row">
+                            {% set field_num = loop.index %}
+                            {% for field in item.answer %}
+                                {% if loop.index == field_num %}
+                                    <div class="col-sm">
+                                        {{ field.label }} {{ loop.index }}
+                                        {{ field(class="form-control") }}
+                                    </div>
+                                    <br/>
+                                    {% for error in field.errors %}
+                                        <p class="alert alert-danger" role="alert">
+                                            {{ error }}
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            {% for field in item.scores %}
+                                {% if loop.index == field_num %}
+                                    <div class="col-sm">
+                                        {{ field.label }} {{ loop.index }}
+                                        {{ field(class="form-control") }}
+                                    </div>
+                                    <br/>
+                                    {% for error in field.errors %}
+                                        <p class="alert alert-danger" role="alert">
+                                            {{ error }}
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <br>
+                {% elif loop.index == 3 %}
+                    <br>
+                {% elif 3 < loop.index < 6 %}
+                    <div class="row">
+                        {{ it(type="submit", class="btn") }}
+                        {% for error in it.errors %}
+                            <p class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                    <br>
+                {% else %}
+                    {{ it }}
+                {% endif %}
             {% endfor %}
-        </div>
-        <!--
-        <a href="/tests/add_ans" class="btn btn-primary">{{ form.add_answer.label.text }}</a>
-        <a href="/tests/del_ans" class="btn btn-danger">{{ form.del_answer.label.text }}</a>
-        -->
+        {% endfor %}
     </div>
     <br>
     <p>
@@ -57,10 +109,7 @@
         {{ form.del_con(type="submit", class="btn") }}
     </p>
     <p>
-        <!--<a href="/tests/add_ans" class="btn btn-success">{{ form.add_answer.label.text}}</a>
-        <a href="/tests/del_ans" class="btn btn-danger">{{ form.del_answer.label.text}}</a>-->
-        {{ form.add_answer(type="submit", class="btn") }}
-        {{ form.del_answer(type="submit", class="btn") }}
+
     </p>
     {{message}}
     <div class="container">

@@ -187,42 +187,40 @@ def add_test(action):
 
             st2 = ';'.join(sp2)
 
+            st3 = form.teggs.data
+
             # print(st)
 
             db_sess = db_session.create_session()
             test = Tests()
             test.title = form.name.data
             test.content = form.description.data
-            test.tegs = form.teggs.data
+            test.tegs = st3
             test.questions = st
             test.user_id = current_user.get_id()
             test.result = st2
             db_sess.add(test)
             db_sess.commit()
 
+            all_results = db_sess.query(Tests).filter(Tests.title == form.name.data,
+                                                      Tests.content == form.description.data,
+                                                      Tests.tegs == form.teggs.data,
+                                                      Tests.questions == st,
+                                                      Tests.user_id == current_user.get_id(),
+                                                      Tests.result == st2).first()
+            test_id = all_results.id
+            st3_parsed = st3.split(';')
+            for i in range(len(st3_parsed)):
+                tegs = Tegs()
+                tegs.teg = st3_parsed[i]
+                tegs.test_id = test_id
+                db_sess.add(tegs)
+            db_sess.commit()
+
             return redirect('/')
 
-    if form.data['add_answer']:
-        for i in range(len(form.questions.entries)):
-            form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
-            form.questions.entries[i].form.answer.entries[-1].data = None
-
-            form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
-            form.questions.entries[i].form.scores.entries[-1].data = None
-    elif form.data['del_answer']:
-        if len(form.questions.entries[0].form.answer) > 1:
-            for i in range(len(form.questions.entries)):
-                form.questions.entries[i].form.answer.pop_entry()
-                form.questions.entries[i].form.scores.pop_entry()
-    elif form.data['submit_con']:
+    if form.data['submit_con']:
         form.questions.append_entry(FormField(Answers))
-
-        while len(form.questions.entries[-1].form.answer) < len(form.questions.entries[0].form.answer):
-            form.questions.entries[-1].form.answer.append_entry(StringField('ответ'))
-            form.questions.entries[-1].form.answer.entries[-1].data = None
-
-            form.questions.entries[-1].form.scores.append_entry(IntegerField("Количество баллов"))
-            form.questions.entries[-1].form.scores.entries[-1].data = None
     elif form.data['del_con']:
         if len(form.questions) > 1:
             form.questions.pop_entry()
@@ -236,6 +234,17 @@ def add_test(action):
             form.res_point.pop_entry()
             form.res_point_max.pop_entry()
             form.result.pop_entry()
+    else:
+        for i in range(len(form.questions.entries)):
+            if form.questions.entries[i].data['add_answer']:
+                form.questions.entries[i].form.answer.append_entry(StringField('ответ'))
+                form.questions.entries[i].form.answer.entries[-1].data = None
+
+                form.questions.entries[i].form.scores.append_entry(IntegerField("Количество баллов"))
+                form.questions.entries[i].form.scores.entries[-1].data = None
+            elif form.questions.entries[i].data['del_answer']:
+                form.questions.entries[i].form.answer.pop_entry()
+                form.questions.entries[i].form.scores.pop_entry()
 
     return render_template('news.html', num=num, form=form, title='Добавление теста')
 
