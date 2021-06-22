@@ -252,7 +252,8 @@ def add_test(action):
 @app.route('/tests_run/<int:num>', methods=['GET', 'POST'])
 def run_news(num):
     form = TestAnswers()
-    if form.data['submit'] and form.data['answers'] is not None:  # надеюсь будет работать
+    if form.data['submit'] and form.data['answers'] is not None:
+        # TODO сделать чтобы очки и номе теста пользователя записывались в бд и оттуда брались а не вот это
         form.sp.append(form.data['answers'])
         return redirect('/tests_run/{}'.format(num))
     db_sess = db_session.create_session()
