@@ -251,10 +251,15 @@ def add_test(action):
 
 @app.route('/tests_run/<int:num>', methods=['GET', 'POST'])
 def run_news(num):
+    score = int(request.args.get('score'))
+    question_num = int(request.args.get('question'))
     form = TestAnswers()
-    if form.data['submit'] and form.data['answers'] is not None:  # надеюсь будет работать
-        form.sp.append(form.data['answers'])
-        return redirect('/tests_run/{}'.format(num))
+    if form.data['submit'] and form.data['answers'] is not None:
+        # form.sp.append(form.data['answers'])
+        score += int(form.data['answers'])
+        question_num += 1
+        # score += form.data['answers']
+        return redirect('/tests_run/{}?score={}&question={}'.format(num, str(score), str(question_num)))
     db_sess = db_session.create_session()
     all_values = db_sess.query(Tests).filter(Tests.id == num).first()
     title = all_values.title
@@ -265,31 +270,31 @@ def run_news(num):
     parsed_quest = all_values.questions.split(';')
     del parsed_quest[-1]
     num_q = len(list(filter(lambda x: x[0] != '$' and x[0] != '%', parsed_quest)))
-    print(form.sp)
-    if num_q <= len(form.sp):
-        s = sum(list(map(int, form.sp)))
+    # print(form.sp)
+    if num_q <= question_num:
+        s = score
         TestAnswers.sp = []
         return redirect('/tests_run/end/{}&{}'.format(num, s))
     else:
         for i in range(len(parsed_quest)):
             if parsed_quest[i][0] == '%':
-                if cicle - 1 == len(form.sp):
+                if cicle - 1 == question_num:
                     answers.append(parsed_quest[i][1::])
             elif parsed_quest[i][0] == '$':
-                if cicle - 1 == len(form.sp):
+                if cicle - 1 == question_num:
                     scores.append(parsed_quest[i][1::])
             else:
                 cicle += 1
-                if cicle - 1 == len(form.sp):
+                if cicle - 1 == question_num:
                     question = parsed_quest[i]
-            if cicle > len(form.sp) + 1:
+            if cicle > question_num + 1:
                 break
 
         for i in range(len(answers)):
             form.answers.choices.append((int(scores[i]), answers[i]))
 
         # form.answers.choices.append(('val2', 'dont choose this'))
-        return render_template('run_test.html', title=title, num=len(form.sp) + 1, form=form, question=question)
+        return render_template('run_test.html', title=title, num=question_num + 1, form=form, question=question)
 
 
 @app.route('/tests_run/end/<int:num>&<int:s>', methods=['GET', 'POST'])
@@ -341,7 +346,7 @@ def edit_news(f):
             date = i
 
         if form.data['run_test']:
-            return redirect('/tests_run/{}'.format(id_t))
+            return redirect('/tests_run/{}?score={}&question={}'.format(id_t, '0', '0'))
 
     except Exception:
         crea = 1

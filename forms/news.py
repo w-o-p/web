@@ -53,5 +53,3 @@ class Test_teggs_submit(FlaskForm):
 class TestAnswers(FlaskForm):
     answers = RadioField('Ответы', choices=[])
     submit = SubmitField('Отправить ответ')
-
-    sp = []
