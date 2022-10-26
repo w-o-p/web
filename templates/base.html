@@ -9,17 +9,31 @@
           crossorigin="anonymous">
     <title>{{title}}</title>
     <style>
-    .left_nav {
-    height: 100%;
-    width: 160px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    overflow-x: hidden;
-    padding-top: 20px;
-    size: 30;
+    .left-menu{
+        display: block;
+        width: 160px;
+        color: white;
+        position: fixed;
+        top: 80px;
+        left: -160px;
+        transition: all 1.5s;
+        background-color: #17181c;
+    }
+    .left-menu.open{
+        left: 0px;
+    }
+    .menu{
+        position: fixed;
+        left: 0px;
+        top: 80px;
+        text-align: center;
+        font-size: 1.5rem;
+        transition: all 1.5s;
+        border-radius: 0px;
+        width: auto !important;
+    }
+    .menu.open{
+        left: 160px;
     }
     .up_site {
     width: 100%;
@@ -64,29 +78,6 @@
 </head>
 <body class="site">
 <header>
-    <div class="left_nav" align="middle">
-        <a class="text-light" href="/">All tests</a>
-        <br>
-        <br>
-        <a href="/" class="text-light">
-            Основная
-        </a>
-        <br>
-        <br>
-        <a href="/tests/create" class="text-light">
-            Создать тест
-        </a>
-        <br>
-        <br>
-        <a href="/search" class="text-light">
-            Поиск тестов
-        </a>
-        <br>
-        <br>
-        <a href="/acc_page_search" class="text-light">
-            Поиск аккаунтов
-        </a>
-    </div>
     <div align="right" class="up_site">
         {% if current_user.is_authenticated %}
         <p>
@@ -109,5 +100,40 @@
         {% block content %}{% endblock %}
     </div>
 </main>
+
+<div id="menu" class="btn menu">
+    ≡
+</div>
+<div id="left" class="left-menu" align="center">
+    <a class="text-light" href="/">All tests</a>
+    <br>
+    <br>
+    <a href="/" class="text-light">
+        Основная
+    </a>
+    <br>
+    <br>
+    <a href="/tests/create" class="text-light">
+        Создать тест
+    </a>
+    <br>
+    <br>
+    <a href="/search" class="text-light">
+        Поиск тестов
+    </a>
+    <br>
+    <br>
+    <a href="/acc_page_search" class="text-light">
+        Поиск аккаунтов
+    </a>
+</div>
+
+<script>
+    document.getElementById("menu").onclick = function() {
+        document.getElementById("left").classList.toggle('open');
+        document.getElementById("menu").classList.toggle('open');
+    }
+</script>
+
 </body>
 </html>
